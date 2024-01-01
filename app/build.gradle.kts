@@ -110,6 +110,7 @@ dependencies {
     //Navigation Component
     val navigationVersion = "2.7.6"
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
+    androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
 
     //Paging
     val pagingVersion = "3.2.1"

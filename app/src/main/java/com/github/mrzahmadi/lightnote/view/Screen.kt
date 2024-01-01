@@ -19,10 +19,10 @@ sealed class Screen(
 ) {
 
     data object Home : Screen(
-        R.string.Home,
+        R.string.home,
         Icons.Filled.Home,
         Icons.Outlined.Home,
-        "Home"
+        "home"
     )
 
     data object Favorite : Screen(
