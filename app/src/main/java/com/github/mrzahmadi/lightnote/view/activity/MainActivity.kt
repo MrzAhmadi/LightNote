@@ -3,6 +3,8 @@ package com.github.mrzahmadi.lightnote.view.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -104,7 +106,9 @@ fun NaveHost(navController: NavHostController = rememberNavController()) {
         NavHost(
             navController,
             startDestination = Screen.Home.route,
-            Modifier.padding(innerPadding)
+            Modifier.padding(innerPadding),
+            enterTransition = {EnterTransition.None},
+            exitTransition = { ExitTransition.None}
         ) {
             composable(Screen.Home.route) {
                 HomeScreen()
