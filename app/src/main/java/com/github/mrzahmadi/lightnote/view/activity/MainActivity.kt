@@ -18,11 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -57,21 +59,27 @@ const val NAVIGATION_BAR_ITEM_TAG_PREFIX = "NavigationBarItem_"
 @OptIn(ExperimentalComposeUiApi::class)
 @Preview(showSystemUi = true)
 @Composable
-fun NaveHost(navController: NavHostController = rememberNavController()) {
+fun NaveHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+) {
     val items = Screen.getNavigationBarScreenList()
     Scaffold(
-        modifier = Modifier.semantics {
+        modifier = modifier.semantics {
             testTagsAsResourceId = true
         },
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = Color.White,
+                tonalElevation = 12.dp
+            ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 items.forEachIndexed() { index, screen ->
                     val isSelected =
                         currentDestination?.hierarchy?.any { it.route == screen.route } == true
                     NavigationBarItem(
-                        modifier = Modifier.testTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
+                        modifier = modifier.testTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
                         alwaysShowLabel = false,
                         label = { Text(stringResource(screen.title)) },
                         selected = isSelected,
@@ -107,8 +115,8 @@ fun NaveHost(navController: NavHostController = rememberNavController()) {
             navController,
             startDestination = Screen.Home.route,
             Modifier.padding(innerPadding),
-            enterTransition = {EnterTransition.None},
-            exitTransition = { ExitTransition.None}
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
         ) {
             composable(Screen.Home.route) {
                 HomeScreen()

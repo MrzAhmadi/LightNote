@@ -14,9 +14,13 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun BaseAppBar(modifier: Modifier = Modifier, title: String = "Title") {
+fun BaseTopAppBar(modifier: Modifier = Modifier, title: String = "Title") {
     TopAppBar(
-        modifier = modifier.shadow(12.dp, spotColor = Color.DarkGray),
+        modifier = modifier
+            .shadow(
+            elevation = 12.dp,
+            spotColor = Color.DarkGray
+        ),
         title = { Text(text = title) }
     )
 }

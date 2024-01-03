@@ -8,15 +8,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.widget.BaseAppBar
+import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 
 @Preview(showSystemUi = true)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BaseAppBar(title = stringResource(Screen.Profile.title))
+            BaseTopAppBar(title = stringResource(Screen.Profile.title))
         }, content = {
             it.calculateTopPadding()
             it.calculateBottomPadding()
