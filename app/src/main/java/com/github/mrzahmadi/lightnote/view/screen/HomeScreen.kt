@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.mrzahmadi.lightnote.data.model.Note
-import com.github.mrzahmadi.lightnote.ui.theme.backgroundColor
+import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
@@ -26,17 +26,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         topBar = {
             BaseTopAppBar(title = stringResource(id = Screen.Home.title))
-        }, content = {paddingValues->
+        }, content = { paddingValues ->
             val notes = Note.getTestingList()
             LazyColumn(
                 modifier = modifier
-                    .background(backgroundColor())
+                    .fillMaxSize()
+                    .background(windowBackgroundColor())
                     .padding(paddingValues),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 20.dp)
             ) {
                 items(
                     items = notes,
-                    itemContent = { lazyItem->
+                    itemContent = { lazyItem ->
                         NoteItem(note = lazyItem)
                     }
                 )

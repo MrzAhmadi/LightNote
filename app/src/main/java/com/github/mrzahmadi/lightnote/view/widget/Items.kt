@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.cardBackgroundColor
-import com.github.mrzahmadi.lightnote.ui.theme.descriptionColor
-import com.github.mrzahmadi.lightnote.ui.theme.titleColor
+import com.github.mrzahmadi.lightnote.ui.theme.grayColor
+import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,14 +53,14 @@ fun NoteItem(
                 text = note.title,
                 textAlign = TextAlign.Start,
                 fontSize = 16.sp,
-                color = titleColor()
+                color = primaryDarkColor()
             )
             Spacer(modifier = modifier.padding(4.dp))
             Text(
                 text = note.description,
                 textAlign = TextAlign.Start,
                 fontSize = 12.sp,
-                color = descriptionColor()
+                color = grayColor()
             )
         }
     }

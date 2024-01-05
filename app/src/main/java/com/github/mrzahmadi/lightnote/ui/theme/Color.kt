@@ -4,36 +4,128 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val PrimaryDay = Color(0xFF0B79E5)
+val SecondaryDay = Color(0xFFFFFFFF)
+val TertiaryDay = Color(0xFF0B79E5)
+val BackgroundDay = Color(0xFFFFFFFF)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val PrimaryNight = Color(0xFF8AB4F8)
+val SecondaryNight = Color(0xFF202125)
+val TertiaryNight = Color(0xFF8AB4F8)
+val BackgroundNight = Color(0xFF202125)
 
+
+
+@Composable
+fun windowBackgroundColor() = if (isSystemInDarkTheme())
+    BackgroundNight
+else
+    BackgroundDay
 
 
 @Composable
-fun backgroundColor() = if (isSystemInDarkTheme())
-    Color.DarkGray
+fun appBarColor() = if (isSystemInDarkTheme())
+    Color(0xFF202125)
 else
-    Color.White
+    Color(0xFFFFFFFF)
+
 
 @Composable
-fun titleColor() = if (isSystemInDarkTheme())
-    Color.White
+fun appBarDividerColor() = if (isSystemInDarkTheme())
+    Color(0xFF505155)
 else
-    Color.Black
+    Color(0XFFDCDCDC)
 
-@Composable
-fun descriptionColor() = if (isSystemInDarkTheme())
-    Color.DarkGray
-else
-    Color.Gray
 
 @Composable
 fun cardBackgroundColor() = if (isSystemInDarkTheme())
-    Color.Gray
+    Color(0XFF3C4043)
 else
-    Color.White
+    Color(0xFFFFFFFF)
+
+
+@Composable
+fun dividerColor() = if(isSystemInDarkTheme())
+    Color(0xFF505155)
+else
+    Color(0XFFDCDCDC)
+
+
+@Composable
+fun primaryDarkColor() = if(isSystemInDarkTheme())
+    Color(0xFFFFFFFF)
+else
+    Color(0xFF202124)
+
+
+@Composable
+fun grayColor() = if(isSystemInDarkTheme())
+    Color(0xFFE8EAED)
+else
+    Color(0xFF3C4043)
+
+@Composable
+fun softGrayColor() = if(isSystemInDarkTheme())
+    Color(0xFFA0A3A7)
+else
+    Color(0xFF5F6368)
+
+@Composable
+fun lightGrayColor() = if(isSystemInDarkTheme())
+    Color(0xFFA0A3A7)
+else
+    Color(0xFFA0A3A7)
+
+@Composable
+fun lightColor() = if(isSystemInDarkTheme())
+    Color(0xFF3C4043)
+else
+    Color(0xFFF8F9FA)
+
+@Composable
+fun whiteColor() = if(isSystemInDarkTheme())
+    Color(0xFF1A1B1E)
+else
+    Color(0xFFFFFFFF)
+
+@Composable
+fun skyColor() = if(isSystemInDarkTheme())
+    Color(0xFF3C434E)
+else
+    Color(0xFFE8F0FB)
+
+@Composable
+fun lightBlueColor() = if(isSystemInDarkTheme())
+    Color(0xFF8AB4F8)
+else
+    Color(0xFF8AB4F8)
+
+@Composable
+fun primaryBlueColor() = if(isSystemInDarkTheme())
+    Color(0xFF8AB4F8)
+else
+    Color(0xFF0B79E5)
+
+@Composable
+fun redColor() = if(isSystemInDarkTheme())
+    Color(0xFFE65C73)
+else
+    Color(0xFFFF4C6A)
+
+@Composable
+fun greenColor() = if(isSystemInDarkTheme())
+    Color(0xFF6BB374)
+else
+    Color(0xFF4ECC5E)
+
+@Composable
+fun yellowColor() = if(isSystemInDarkTheme())
+    Color(0xFFFAA805)
+else
+    Color(0xFFFAA805)
+
+@Composable
+fun pinkColor() = if(isSystemInDarkTheme())
+    Color(0xFFFF70A2)
+else
+    Color(0xFFFF70A2)

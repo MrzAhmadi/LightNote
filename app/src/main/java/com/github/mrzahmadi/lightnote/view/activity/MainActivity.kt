@@ -5,10 +5,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -18,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -33,6 +36,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.ui.theme.LightNoteTheme
+import com.github.mrzahmadi.lightnote.ui.theme.appBarColor
+import com.github.mrzahmadi.lightnote.ui.theme.appBarDividerColor
+import com.github.mrzahmadi.lightnote.ui.theme.grayColor
+import com.github.mrzahmadi.lightnote.ui.theme.softGrayColor
+import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
 import com.github.mrzahmadi.lightnote.view.screen.HomeScreen
@@ -45,7 +53,7 @@ class MainActivity : ComponentActivity() {
             LightNoteTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = windowBackgroundColor()
                 ) {
                     NaveHost()
                 }
@@ -69,65 +77,87 @@ fun NaveHost(
             testTagsAsResourceId = true
         },
         bottomBar = {
-            NavigationBar(
-                containerColor = Color.White,
-                tonalElevation = 12.dp
-            ) {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                items.forEachIndexed() { index, screen ->
-                    val isSelected =
-                        currentDestination?.hierarchy?.any { it.route == screen.route } == true
-                    NavigationBarItem(
-                        modifier = modifier.testTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
-                        alwaysShowLabel = false,
-                        label = { Text(stringResource(screen.title)) },
-                        selected = isSelected,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            if (isSelected)
-                                Icon(
-                                    imageVector = screen.selectedIcon,
-                                    contentDescription = screen.route,
-                                    tint = MaterialTheme.colorScheme.scrim
-                                )
-                            else
-                                Icon(
-                                    imageVector = screen.unselectedIcon,
-                                    contentDescription = screen.route,
-                                    tint = MaterialTheme.colorScheme.outline
-                                )
-                        }
-                    )
-                }
-            }
+            PrimaryNavigationBar(navController, items, modifier)
+            Spacer(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(appBarDividerColor())
+            )
         }
     ) { innerPadding ->
-        NavHost(
-            navController,
-            startDestination = Screen.Home.route,
-            Modifier.padding(innerPadding),
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
-        ) {
-            composable(Screen.Home.route) {
-                HomeScreen()
-            }
-            composable(Screen.Favorite.route) {
-                FavoriteScreen()
-            }
-            composable(Screen.Profile.route) {
-                ProfileScreen()
-            }
-        }
+        PrimaryNaveHost(navController, innerPadding)
     }
 
+}
+
+@Composable
+private fun PrimaryNavigationBar(
+    navController: NavHostController,
+    items: List<Screen>,
+    modifier: Modifier
+) {
+    NavigationBar(
+        containerColor = appBarColor()
+    ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+        items.forEachIndexed() { index, screen ->
+            val isSelected =
+                currentDestination?.hierarchy?.any { it.route == screen.route } == true
+            NavigationBarItem(
+                modifier = modifier.testTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
+                alwaysShowLabel = false,
+                label = { Text(stringResource(screen.title)) },
+                selected = isSelected,
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                icon = {
+                    if (isSelected)
+                        Icon(
+                            imageVector = screen.selectedIcon,
+                            contentDescription = screen.route,
+                            tint = grayColor()
+                        )
+                    else
+                        Icon(
+                            imageVector = screen.unselectedIcon,
+                            contentDescription = screen.route,
+                            tint = softGrayColor()
+                        )
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun PrimaryNaveHost(
+    navController: NavHostController,
+    innerPadding: PaddingValues
+) {
+    NavHost(
+        navController,
+        startDestination = Screen.Home.route,
+        Modifier.padding(innerPadding),
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ) {
+        composable(Screen.Home.route) {
+            HomeScreen()
+        }
+        composable(Screen.Favorite.route) {
+            FavoriteScreen()
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen()
+        }
+    }
 }
