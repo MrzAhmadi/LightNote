@@ -5,16 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,7 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -36,10 +32,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.ui.theme.LightNoteTheme
-import com.github.mrzahmadi.lightnote.ui.theme.appBarColor
-import com.github.mrzahmadi.lightnote.ui.theme.appBarDividerColor
-import com.github.mrzahmadi.lightnote.ui.theme.grayColor
-import com.github.mrzahmadi.lightnote.ui.theme.softGrayColor
+import com.github.mrzahmadi.lightnote.ui.theme.navigationBarColor
+import com.github.mrzahmadi.lightnote.ui.theme.navigationBarContentColor
+import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentBadgeColor
+import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
@@ -78,12 +74,6 @@ fun NaveHost(
         },
         bottomBar = {
             PrimaryNavigationBar(navController, items, modifier)
-            Spacer(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(appBarDividerColor())
-            )
         }
     ) { innerPadding ->
         PrimaryNaveHost(navController, innerPadding)
@@ -98,7 +88,7 @@ private fun PrimaryNavigationBar(
     modifier: Modifier
 ) {
     NavigationBar(
-        containerColor = appBarColor()
+        containerColor = navigationBarColor(),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -106,8 +96,16 @@ private fun PrimaryNavigationBar(
             val isSelected =
                 currentDestination?.hierarchy?.any { it.route == screen.route } == true
             NavigationBarItem(
+                colors = NavigationBarItemDefaults.colors(
+                    disabledIconColor = navigationBarContentColor(),
+                    disabledTextColor = navigationBarContentColor(),
+                    unselectedIconColor = navigationBarContentColor(),
+                    unselectedTextColor = navigationBarContentColor(),
+                    selectedIconColor = navigationBarSelectedContentColor(),
+                    selectedTextColor = navigationBarSelectedContentColor(),
+                    indicatorColor = navigationBarSelectedContentBadgeColor()
+                ),
                 modifier = modifier.testTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
-                alwaysShowLabel = false,
                 label = { Text(stringResource(screen.title)) },
                 selected = isSelected,
                 onClick = {
@@ -124,13 +122,11 @@ private fun PrimaryNavigationBar(
                         Icon(
                             imageVector = screen.selectedIcon,
                             contentDescription = screen.route,
-                            tint = grayColor()
                         )
                     else
                         Icon(
                             imageVector = screen.unselectedIcon,
                             contentDescription = screen.route,
-                            tint = softGrayColor()
                         )
                 }
             )

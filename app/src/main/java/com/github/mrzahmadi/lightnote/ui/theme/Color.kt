@@ -12,9 +12,7 @@ val BackgroundDay = Color(0xFFFFFFFF)
 val PrimaryNight = Color(0xFF8AB4F8)
 val SecondaryNight = Color(0xFF202125)
 val TertiaryNight = Color(0xFF8AB4F8)
-val BackgroundNight = Color(0xFF202125)
-
-
+val BackgroundNight = Color(0xFF131313)
 
 @Composable
 fun windowBackgroundColor() = if (isSystemInDarkTheme())
@@ -22,20 +20,41 @@ fun windowBackgroundColor() = if (isSystemInDarkTheme())
 else
     BackgroundDay
 
-
 @Composable
 fun appBarColor() = if (isSystemInDarkTheme())
-    Color(0xFF202125)
+    Color(0xFF131313)
 else
     Color(0xFFFFFFFF)
 
-
 @Composable
 fun appBarDividerColor() = if (isSystemInDarkTheme())
-    Color(0xFF505155)
+    Color(0XFF2D2D2D)
 else
-    Color(0XFFDCDCDC)
+    Color(0XFFE4E4E4)
 
+@Composable
+fun navigationBarColor() = if (isSystemInDarkTheme())
+    Color(0XFF1E1F21)
+else
+    Color(0XFFF0F3F8)
+
+@Composable
+fun navigationBarContentColor() = if (isSystemInDarkTheme())
+    Color(0XFFC6C8C7)
+else
+    Color(0xFF474747)
+
+@Composable
+fun navigationBarSelectedContentColor() = if (isSystemInDarkTheme())
+    Color(0XFFE4E2E3)
+else
+    Color(0XFF1F1F1F)
+
+@Composable
+fun navigationBarSelectedContentBadgeColor() = if (isSystemInDarkTheme())
+    Color(0XFF004A77)
+else
+    Color(0XFFC3E7FF)
 
 @Composable
 fun cardBackgroundColor() = if (isSystemInDarkTheme())
