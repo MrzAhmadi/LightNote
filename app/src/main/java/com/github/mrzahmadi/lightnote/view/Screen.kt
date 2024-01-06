@@ -13,8 +13,8 @@ import com.github.mrzahmadi.lightnote.R
 
 sealed class Screen(
     @StringRes val title: Int,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
+    val selectedIcon: ImageVector? = null,
+    val unselectedIcon: ImageVector? = null,
     val route: String
 ) {
 
@@ -37,6 +37,11 @@ sealed class Screen(
         Icons.Filled.AccountCircle,
         Icons.Outlined.AccountCircle,
         "profile"
+    )
+
+    data object Note : Screen(
+        title = R.string.note,
+        route = "note"
     )
 
     companion object {

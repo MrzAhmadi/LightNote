@@ -17,6 +17,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -40,6 +42,7 @@ import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
 import com.github.mrzahmadi.lightnote.view.screen.HomeScreen
+import com.github.mrzahmadi.lightnote.view.screen.NoteScreen
 import com.github.mrzahmadi.lightnote.view.screen.ProfileScreen
 
 class MainActivity : ComponentActivity() {
@@ -67,16 +70,35 @@ fun NaveHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
+    val bottomBarState = remember { mutableStateOf(true) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    when (navBackStackEntry?.destination?.route) {
+        Screen.Note.route -> {
+            bottomBarState.value = false
+        }
+
+        else -> {
+            bottomBarState.value = true
+        }
+    }
     val items = Screen.getNavigationBarScreenList()
     Scaffold(
         modifier = modifier.semantics {
             testTagsAsResourceId = true
         },
         bottomBar = {
-            PrimaryNavigationBar(navController, items, modifier)
+            if (bottomBarState.value)
+                PrimaryNavigationBar(
+                    navController,
+                    items,
+                    modifier
+                )
         }
     ) { innerPadding ->
-        PrimaryNaveHost(navController, innerPadding)
+        PrimaryNaveHost(
+            navController,
+            innerPadding,
+        )
     }
 
 }
@@ -119,15 +141,19 @@ private fun PrimaryNavigationBar(
                 },
                 icon = {
                     if (isSelected)
-                        Icon(
-                            imageVector = screen.selectedIcon,
-                            contentDescription = screen.route,
-                        )
+                        screen.selectedIcon?.let {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = screen.route,
+                            )
+                        }
                     else
-                        Icon(
-                            imageVector = screen.unselectedIcon,
-                            contentDescription = screen.route,
-                        )
+                        screen.unselectedIcon?.let {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = screen.route,
+                            )
+                        }
                 }
             )
         }
@@ -147,13 +173,16 @@ private fun PrimaryNaveHost(
         exitTransition = { ExitTransition.None }
     ) {
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(navHostController = navController)
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen()
         }
         composable(Screen.Profile.route) {
             ProfileScreen()
+        }
+        composable(Screen.Note.route) {
+            NoteScreen(navHostController = navController)
         }
     }
 }

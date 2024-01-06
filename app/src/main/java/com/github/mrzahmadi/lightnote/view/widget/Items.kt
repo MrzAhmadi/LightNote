@@ -15,18 +15,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.cardBackgroundColor
 import com.github.mrzahmadi.lightnote.ui.theme.grayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
+import com.github.mrzahmadi.lightnote.view.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteItem(
-    modifier: Modifier = Modifier, note: Note
+    modifier: Modifier = Modifier,
+    note: Note,
+    navHostController: NavHostController? = null,
 ) {
     Card(
-        onClick = {}, modifier = modifier
+        onClick = {
+            navHostController?.navigate(Screen.Note.route)
+        }, modifier = modifier
             .padding(
                 top = 8.dp, bottom = 8.dp
             )
@@ -65,7 +71,9 @@ fun NoteItem(
 fun MyViewPreview() {
     NoteItem(
         note = Note(
-            1, "Title", "Description"
+            1,
+            "Title",
+            "Description"
         )
     )
 }

@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
@@ -19,9 +21,11 @@ import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
 
 
-@Preview(showSystemUi = true)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -33,15 +37,30 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .background(windowBackgroundColor())
                     .padding(paddingValues),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 20.dp)
+                contentPadding = PaddingValues(
+                    horizontal = 16.dp,
+                    vertical = 20.dp
+                )
             ) {
                 items(
                     items = notes,
                     key = { it.id },
                     itemContent = { lazyItem ->
-                        NoteItem(note = lazyItem)
+                        NoteItem(
+                            note = lazyItem,
+                            navHostController = navHostController
+                        )
                     }
                 )
             }
         })
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun HomeScreenPreview() {
+    val navController: NavHostController = rememberNavController()
+    HomeScreen(
+        navHostController = navController
+    )
 }
