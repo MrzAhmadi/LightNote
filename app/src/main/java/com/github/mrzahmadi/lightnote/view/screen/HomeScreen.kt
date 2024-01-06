@@ -37,6 +37,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             ) {
                 items(
                     items = notes,
+                    key = { it.id },
                     itemContent = { lazyItem ->
                         NoteItem(note = lazyItem)
                     }

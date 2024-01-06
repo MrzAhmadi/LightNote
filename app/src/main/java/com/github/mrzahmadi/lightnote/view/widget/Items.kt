@@ -23,24 +23,18 @@ import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteItem(
-    modifier: Modifier = Modifier,
-    note: Note
+    modifier: Modifier = Modifier, note: Note
 ) {
     Card(
-        onClick = {},
-        modifier = modifier
+        onClick = {}, modifier = modifier
             .padding(
-                top = 8.dp,
-                bottom = 8.dp
+                top = 8.dp, bottom = 8.dp
             )
-            .fillMaxWidth(),
-        shape = RoundedCornerShape(
+            .fillMaxWidth(), shape = RoundedCornerShape(
             size = 4.dp,
-        ),
-        colors = CardDefaults.cardColors(
+        ), colors = CardDefaults.cardColors(
             cardBackgroundColor()
-        ),
-        elevation = CardDefaults.cardElevation(
+        ), elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
         )
     ) {
@@ -71,8 +65,7 @@ fun NoteItem(
 fun MyViewPreview() {
     NoteItem(
         note = Note(
-            "Title",
-            "Description"
+            1, "Title", "Description"
         )
     )
 }
