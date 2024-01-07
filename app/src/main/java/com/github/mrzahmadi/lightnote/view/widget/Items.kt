@@ -31,7 +31,7 @@ fun NoteItem(
 ) {
     Card(
         onClick = {
-            navHostController?.navigate(Screen.Note.route)
+            navHostController?.navigate("${Screen.Note.route}/${note.id}")
         }, modifier = modifier
             .padding(
                 top = 8.dp, bottom = 8.dp

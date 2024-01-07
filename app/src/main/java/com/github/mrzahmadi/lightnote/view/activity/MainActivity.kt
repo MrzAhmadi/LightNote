@@ -39,6 +39,7 @@ import com.github.mrzahmadi.lightnote.ui.theme.navigationBarContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentBadgeColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
+import com.github.mrzahmadi.lightnote.utils.ext.getRouteWithoutParams
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
 import com.github.mrzahmadi.lightnote.view.screen.HomeScreen
@@ -72,7 +73,7 @@ fun NaveHost(
 ) {
     val bottomBarState = remember { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    when (navBackStackEntry?.destination?.route) {
+    when (navBackStackEntry?.destination?.getRouteWithoutParams()) {
         Screen.Note.route -> {
             bottomBarState.value = false
         }
@@ -181,8 +182,15 @@ private fun PrimaryNaveHost(
         composable(Screen.Profile.route) {
             ProfileScreen()
         }
-        composable(Screen.Note.route) {
-            NoteScreen(navHostController = navController)
+        composable("${Screen.Note.route}/{nId}") { navBackStackEntry ->
+            val noteId = navBackStackEntry.arguments?.getString("nId")
+            noteId?.let {
+                NoteScreen(
+                    navHostController = navController,
+                    noteId = noteId.toInt()
+                )
+            }
+
         }
     }
 }

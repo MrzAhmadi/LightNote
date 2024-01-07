@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,7 +20,8 @@ import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBarWithBack
 @Composable
 fun NoteScreen(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    noteId: Int
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -38,6 +40,7 @@ fun NoteScreen(
                     .padding(paddingValues)
                     .background(windowBackgroundColor())
             ) {
+                Text(text = "Note id is $noteId")
             }
         })
 }
@@ -47,6 +50,7 @@ fun NoteScreen(
 fun NoteScreenPreview() {
     val navController: NavHostController = rememberNavController()
     NoteScreen(
-        navHostController = navController
+        navHostController = navController,
+        noteId = 123
     )
 }
