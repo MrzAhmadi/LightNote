@@ -21,6 +21,7 @@ import com.github.mrzahmadi.lightnote.ui.theme.cardBackgroundColor
 import com.github.mrzahmadi.lightnote.ui.theme.grayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.view.Screen
+import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +32,7 @@ fun NoteItem(
 ) {
     Card(
         onClick = {
-            navHostController?.navigate("${Screen.Note.route}/${note.id}")
+            navHostController?.navigate("${Screen.Note.route}/${Gson().toJson(note)}")
         }, modifier = modifier
             .padding(
                 top = 8.dp, bottom = 8.dp
