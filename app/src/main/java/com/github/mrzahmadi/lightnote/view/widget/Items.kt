@@ -32,7 +32,7 @@ fun NoteItem(
 ) {
     Card(
         onClick = {
-            navHostController?.navigate("${Screen.Note.route}/${Gson().toJson(note)}")
+            navHostController?.navigate("${Screen.Note.route}?${Gson().toJson(note)}")
         }, modifier = modifier
             .padding(
                 top = 8.dp, bottom = 8.dp

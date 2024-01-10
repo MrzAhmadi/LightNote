@@ -29,10 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.LightNoteTheme
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarColor
@@ -184,16 +186,23 @@ private fun PrimaryNaveHost(
         composable(Screen.Profile.route) {
             ProfileScreen()
         }
-        composable("${Screen.Note.route}/{noteObject}") { navBackStackEntry ->
+        composable(
+            "${Screen.Note.route}?{noteObject}",
+            arguments = listOf(navArgument("noteObject") {
+                nullable = true
+                defaultValue = null
+                type = NavType.StringType
+            }),
+        ) { navBackStackEntry ->
             val noteObject = navBackStackEntry.arguments?.getString("noteObject")
-            val note = Gson().fromJson(noteObject, Note::class.java)
-            note?.let {
-                NoteScreen(
-                    navHostController = navController,
-                    note = note
-                )
-            }
-
+            val note = if(noteObject!=null){
+                Gson().fromJson(noteObject, Note::class.java)
+            } else
+                null
+            NoteScreen(
+                navHostController = navController,
+                note = note
+            )
         }
     }
 }
