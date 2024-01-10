@@ -22,11 +22,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.primaryBlueColor
+import com.github.mrzahmadi.lightnote.ui.theme.statusBarColor
 import com.github.mrzahmadi.lightnote.ui.theme.whiteColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 @Composable
@@ -34,12 +36,15 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController
 ) {
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(
+        color = statusBarColor()
+    )
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             BaseTopAppBar(title = stringResource(id = Screen.Home.title))
         }, content = { paddingValues ->
-
             ConstraintLayout(
                 modifier = modifier
                     .fillMaxSize()

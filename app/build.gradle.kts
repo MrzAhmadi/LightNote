@@ -90,6 +90,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
+    //Accompanist
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
+
+
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 

@@ -21,6 +21,12 @@ else
     BackgroundDay
 
 @Composable
+fun statusBarColor() = if (isSystemInDarkTheme())
+    Color(0xFF202125)
+else
+    Color(0xFFFFFFFF)
+
+@Composable
 fun appBarColor() = if (isSystemInDarkTheme())
     Color(0xFF131313)
 else
@@ -58,7 +64,7 @@ else
 
 @Composable
 fun cardBackgroundColor() = if (isSystemInDarkTheme())
-    Color(0XFF3C4043)
+    Color(0xFF202125)
 else
     Color(0xFFFFFFFF)
 
