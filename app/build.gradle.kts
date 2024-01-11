@@ -70,7 +70,6 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("androidx.lifecycle:lifecycle-runtime-testing:$lifecycleVersion")
 
-
     //Junit and General Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -92,7 +91,6 @@ dependencies {
 
     //Accompanist
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
-
 
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -132,5 +130,4 @@ dependencies {
 
     //Gson
     implementation("com.google.code.gson:gson:2.10.1")
-
 }
