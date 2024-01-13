@@ -1,6 +1,5 @@
 package com.github.mrzahmadi.lightnote.utils.ext
 
-import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 
