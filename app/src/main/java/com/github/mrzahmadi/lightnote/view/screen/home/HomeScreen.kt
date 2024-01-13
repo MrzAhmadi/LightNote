@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.primaryBlueColor
 import com.github.mrzahmadi.lightnote.ui.theme.whiteColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
+import com.github.mrzahmadi.lightnote.utils.ext.showToast
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
@@ -74,7 +76,7 @@ fun HomeScreen(
 
                     is DataState.Error -> {
                         val error = (state as DataState.Error).error
-
+                        error.localizedMessage?.let { LocalContext.current.showToast(it) }
                     }
 
                 }
