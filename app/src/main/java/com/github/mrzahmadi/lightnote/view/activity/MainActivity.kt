@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -41,13 +42,15 @@ import com.github.mrzahmadi.lightnote.ui.theme.navigationBarColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentBadgeColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentColor
+import com.github.mrzahmadi.lightnote.ui.theme.statusBarColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.utils.ext.getRouteWithoutParams
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
-import com.github.mrzahmadi.lightnote.view.screen.HomeScreen
+import com.github.mrzahmadi.lightnote.view.screen.home.HomeScreen
 import com.github.mrzahmadi.lightnote.view.screen.NoteScreen
 import com.github.mrzahmadi.lightnote.view.screen.ProfileScreen
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.gson.Gson
 
 class MainActivity : ComponentActivity() {
@@ -75,6 +78,13 @@ fun NaveHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
+
+    // Change color of statusbar
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(
+        color = statusBarColor()
+    )
+
     val bottomBarState = remember { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.getRouteWithoutParams()) {
@@ -178,7 +188,10 @@ private fun PrimaryNaveHost(
         exitTransition = { ExitTransition.None }
     ) {
         composable(Screen.Home.route) {
-            HomeScreen(navHostController = navController)
+            HomeScreen(
+                navHostController = navController,
+                homeScreenViewModel = viewModel()
+                )
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen()

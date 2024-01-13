@@ -1,4 +1,4 @@
-package com.github.mrzahmadi.lightnote.view.screen
+package com.github.mrzahmadi.lightnote.view.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,33 +13,34 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.github.mrzahmadi.lightnote.data.DataState
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.primaryBlueColor
-import com.github.mrzahmadi.lightnote.ui.theme.statusBarColor
 import com.github.mrzahmadi.lightnote.ui.theme.whiteColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    homeScreenViewModel: HomeScreenViewModel,
 ) {
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = statusBarColor()
-    )
+
+    val state by homeScreenViewModel.state.collectAsState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -53,30 +54,29 @@ fun HomeScreen(
             ) {
                 val (floatingRefs, listRefs) = createRefs()
 
-                val notes = Note.getTestingList()
-                LazyColumn(
-                    modifier = modifier
-                        .constrainAs(listRefs) {
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                    contentPadding = PaddingValues(
-                        horizontal = 16.dp,
-                        vertical = 20.dp
-                    )
-                ) {
-                    items(
-                        items = notes,
-                        key = { it.id },
-                        itemContent = { lazyItem ->
-                            NoteItem(
-                                note = lazyItem,
-                                navHostController = navHostController
-                            )
-                        }
-                    )
+                when (state) {
+                    is DataState.Loading -> {
+                    }
+
+                    is DataState.Success -> {
+                        ShowList(
+                            modifier = modifier
+                                .constrainAs(listRefs) {
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                },
+                            navHostController = navHostController,
+                            noteList = (state as DataState.Success<List<Note>>).data
+                        )
+                    }
+
+                    is DataState.Error -> {
+                        val error = (state as DataState.Error).error
+
+                    }
+
                 }
 
                 FloatingActionButton(
@@ -104,6 +104,34 @@ fun HomeScreen(
                 }
             }
         })
+
+    homeScreenViewModel.processIntent(HomeScreenViewIntent.FetchNotes)
+}
+
+@Composable
+private fun ShowList(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    noteList: List<Note>
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            horizontal = 16.dp,
+            vertical = 20.dp
+        )
+    ) {
+        items(
+            items = noteList,
+            key = { it.id },
+            itemContent = { lazyItem ->
+                NoteItem(
+                    note = lazyItem,
+                    navHostController = navHostController
+                )
+            }
+        )
+    }
 }
 
 @Preview(showSystemUi = true)
@@ -111,6 +139,7 @@ fun HomeScreen(
 fun HomeScreenPreview() {
     val navController: NavHostController = rememberNavController()
     HomeScreen(
-        navHostController = navController
+        navHostController = navController,
+        homeScreenViewModel = viewModel()
     )
 }
