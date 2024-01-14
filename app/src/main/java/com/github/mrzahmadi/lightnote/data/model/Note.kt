@@ -1,31 +1,26 @@
 package com.github.mrzahmadi.lightnote.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.github.mrzahmadi.lightnote.data.model.Note.Companion.TABLE_NAME
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+@Entity(tableName = TABLE_NAME)
 data class Note(
+    @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("title")
-    val title: String,
+    var title: String?,
     @SerializedName("description")
-    val description: String
+    var description: String?,
+    @SerializedName("isFavorite")
+    val isFavorite: Boolean = false
 ) : Serializable {
 
     companion object {
-        fun getTestingList(): ArrayList<Note> {
-            val noteList = arrayListOf<Note>()
-            for (i in 1..10) {
-                noteList.add(
-                    Note(
-                        i,
-                        "Title $i",
-                        "simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an..."
-                    )
-                )
-            }
-            return noteList
-        }
+        const val TABLE_NAME = "Note"
     }
 
 }

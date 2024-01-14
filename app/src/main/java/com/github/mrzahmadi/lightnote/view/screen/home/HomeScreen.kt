@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +26,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.data.DataState
+import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.model.Note
+import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
 import com.github.mrzahmadi.lightnote.ui.theme.primaryBlueColor
 import com.github.mrzahmadi.lightnote.ui.theme.whiteColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
@@ -38,10 +41,10 @@ import com.github.mrzahmadi.lightnote.view.widget.NoteItem
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    homeScreenViewModel: HomeScreenViewModel,
+    homeViewModel: HomeViewModel,
 ) {
 
-    val state by homeScreenViewModel.state.collectAsState()
+    val state by homeViewModel.state.collectAsState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -107,7 +110,7 @@ fun HomeScreen(
             }
         })
 
-    homeScreenViewModel.processIntent(HomeScreenViewIntent.FetchNotes)
+    homeViewModel.processIntent(HomeViewIntent.FetchNoteList)
 }
 
 @Composable
@@ -140,8 +143,15 @@ private fun ShowList(
 @Composable
 fun HomeScreenPreview() {
     val navController: NavHostController = rememberNavController()
+    val dao = DatabaseBuilder.getInstance(LocalContext.current).noteDao()
+    val noteRepository = NoteRepository(dao)
     HomeScreen(
         navHostController = navController,
-        homeScreenViewModel = viewModel()
+        homeViewModel = viewModel(
+            factory = HomeViewModel.provideFactory(
+                noteRepository = noteRepository,
+                owner = LocalSavedStateRegistryOwner.current
+            )
+        )
     )
 }

@@ -1,0 +1,57 @@
+package com.github.mrzahmadi.lightnote.view.screen.note
+
+import android.os.Bundle
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.savedstate.SavedStateRegistryOwner
+import com.github.mrzahmadi.lightnote.data.model.Note
+import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
+import kotlinx.coroutines.launch
+
+class NoteViewModel(
+    private val noteRepository: NoteRepository
+) : ViewModel() {
+
+    fun processIntent(intent: NoteViewIntent) {
+        when (intent) {
+            is NoteViewIntent.InsertNote -> insert(intent.note)
+            is NoteViewIntent.UpdateNote -> update(intent.note)
+        }
+    }
+
+    private fun insert(note: Note) {
+        viewModelScope.launch {
+            noteRepository.insert(note)
+        }
+    }
+
+    private fun update(note: Note) {
+        viewModelScope.launch {
+            noteRepository.update(note)
+        }
+    }
+
+    companion object {
+        fun provideFactory(
+            noteRepository: NoteRepository,
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle? = null,
+        ): AbstractSavedStateViewModelFactory =
+            object : AbstractSavedStateViewModelFactory(
+                owner,
+                defaultArgs
+            ) {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(
+                    key: String,
+                    modelClass: Class<T>,
+                    handle: SavedStateHandle
+                ): T {
+                    return NoteViewModel(noteRepository) as T
+                }
+            }
+    }
+
+}

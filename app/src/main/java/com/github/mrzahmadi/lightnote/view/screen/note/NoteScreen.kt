@@ -1,7 +1,6 @@
-package com.github.mrzahmadi.lightnote.view.screen
+package com.github.mrzahmadi.lightnote.view.screen.note
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,15 +19,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.R
+import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.model.Note
+import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
 import com.github.mrzahmadi.lightnote.ui.theme.grayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.ui.theme.softGrayColor
@@ -36,18 +40,41 @@ import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBarWithBack
 
+private var mTitle: String? = null
+private var mDescription: String? = null
+
 @Composable
 fun NoteScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    note: Note?
+    note: Note?,
+    noteViewModel: NoteViewModel,
 ) {
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             BaseTopAppBarWithBack(
                 title = stringResource(Screen.Note.title),
                 onClick = {
+                    if (mTitle != null || mDescription != null) {
+                        if (note != null) {
+                            note.title = mTitle
+                            note.description = mDescription
+                            noteViewModel.processIntent(
+                                NoteViewIntent.UpdateNote(note)
+                            )
+                        } else {
+                            noteViewModel.processIntent(
+                                NoteViewIntent.InsertNote(
+                                    Note(
+                                        title = mTitle,
+                                        description = mDescription
+                                    )
+                                )
+                            )
+                        }
+                    }
                     navHostController.popBackStack()
                 }
             )
@@ -71,15 +98,6 @@ fun NoteScreen(
                 )
             }
         })
-}
-
-@Composable
-fun KeyboardAware(
-    content: @Composable () -> Unit
-) {
-    Box(modifier = Modifier.imePadding()) {
-        content()
-    }
 }
 
 @Composable
@@ -120,6 +138,7 @@ private fun TitleTextField(
         onValueChange = {
             if (it.length <= maxLength)
                 title = it
+            mTitle = title
         },
         maxLines = 1,
         singleLine = true,
@@ -161,6 +180,7 @@ private fun DescriptionTextField(
         onValueChange = {
             if (it.length <= maxLength)
                 description = it
+            mDescription = description
         }
     )
 }
@@ -170,12 +190,21 @@ private fun DescriptionTextField(
 @Composable
 fun NoteScreenPreview() {
     val navController: NavHostController = rememberNavController()
+    val dao = DatabaseBuilder.getInstance(LocalContext.current).noteDao()
+    val noteRepository = NoteRepository(dao)
     NoteScreen(
         navHostController = navController,
         note = Note(
             1,
             "Title",
             "Description"
+        ),
+        noteViewModel = viewModel(
+            factory = NoteViewModel.provideFactory(
+                noteRepository = noteRepository,
+                owner = LocalSavedStateRegistryOwner.current
+            )
         )
+
     )
 }

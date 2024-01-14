@@ -21,6 +21,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -36,7 +38,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.model.Note
+import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
 import com.github.mrzahmadi.lightnote.ui.theme.LightNoteTheme
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarContentColor
@@ -47,9 +51,11 @@ import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.utils.ext.getRouteWithoutParams
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
-import com.github.mrzahmadi.lightnote.view.screen.home.HomeScreen
-import com.github.mrzahmadi.lightnote.view.screen.NoteScreen
 import com.github.mrzahmadi.lightnote.view.screen.ProfileScreen
+import com.github.mrzahmadi.lightnote.view.screen.home.HomeScreen
+import com.github.mrzahmadi.lightnote.view.screen.home.HomeViewModel
+import com.github.mrzahmadi.lightnote.view.screen.note.NoteScreen
+import com.github.mrzahmadi.lightnote.view.screen.note.NoteViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.gson.Gson
 
@@ -188,10 +194,17 @@ private fun PrimaryNaveHost(
         exitTransition = { ExitTransition.None }
     ) {
         composable(Screen.Home.route) {
+            val dao = DatabaseBuilder.getInstance(LocalContext.current).noteDao()
+            val noteRepository = NoteRepository(dao)
             HomeScreen(
                 navHostController = navController,
-                homeScreenViewModel = viewModel()
+                homeViewModel = viewModel(
+                    factory = HomeViewModel.provideFactory(
+                        noteRepository = noteRepository,
+                        owner = LocalSavedStateRegistryOwner.current
+                    )
                 )
+            )
         }
         composable(Screen.Favorite.route) {
             FavoriteScreen()
@@ -208,13 +221,21 @@ private fun PrimaryNaveHost(
             }),
         ) { navBackStackEntry ->
             val noteObject = navBackStackEntry.arguments?.getString("noteObject")
-            val note = if(noteObject!=null){
+            val note = if (noteObject != null) {
                 Gson().fromJson(noteObject, Note::class.java)
             } else
                 null
+            val dao = DatabaseBuilder.getInstance(LocalContext.current).noteDao()
+            val noteRepository = NoteRepository(dao)
             NoteScreen(
                 navHostController = navController,
-                note = note
+                note = note,
+                noteViewModel = viewModel(
+                    factory = NoteViewModel.provideFactory(
+                        noteRepository = noteRepository,
+                        owner = LocalSavedStateRegistryOwner.current
+                    )
+                )
             )
         }
     }

@@ -51,14 +51,14 @@ fun NoteItem(
                 .fillMaxWidth()
         ) {
             Text(
-                text = note.title,
+                text = note.title ?: "",
                 textAlign = TextAlign.Start,
                 fontSize = 16.sp,
                 color = primaryDarkColor()
             )
             Spacer(modifier = modifier.padding(4.dp))
             Text(
-                text = note.description,
+                text = note.description ?: "",
                 textAlign = TextAlign.Start,
                 fontSize = 12.sp,
                 color = grayColor()
