@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
@@ -120,7 +121,8 @@ private fun ShowList(
     noteList: List<Note>
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(
             horizontal = 16.dp,
             vertical = 20.dp
