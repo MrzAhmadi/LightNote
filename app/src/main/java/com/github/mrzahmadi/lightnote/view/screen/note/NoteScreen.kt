@@ -51,13 +51,16 @@ fun NoteScreen(
     noteViewModel: NoteViewModel,
 ) {
 
+    mTitle = null
+    mDescription = null
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             BaseTopAppBarWithBack(
                 title = stringResource(Screen.Note.title),
                 onClick = {
-                    if (mTitle != null || mDescription != null) {
+                    if (!mTitle.isNullOrEmpty() || !mDescription.isNullOrBlank()) {
                         if (note != null) {
                             note.title = mTitle
                             note.description = mDescription
