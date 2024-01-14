@@ -11,6 +11,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,10 +34,13 @@ fun NoteItem(
 ) {
     Card(
         onClick = {
-            navHostController?.navigate("${Screen.Note.route}?${Gson().toJson(note)}")
+            navHostController?.navigate(
+                "${Screen.Note.route}?${Gson().toJson(note)}"
+            )
         }, modifier = modifier
             .padding(
-                top = 8.dp, bottom = 8.dp
+                top = 8.dp,
+                bottom = 8.dp
             )
             .fillMaxWidth(), shape = RoundedCornerShape(
             size = 4.dp,
@@ -47,22 +52,34 @@ fun NoteItem(
     ) {
         Column(
             modifier = modifier
-                .padding(8.dp)
+                .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Text(
-                text = note.title ?: "",
-                textAlign = TextAlign.Start,
-                fontSize = 16.sp,
-                color = primaryDarkColor()
-            )
-            Spacer(modifier = modifier.padding(4.dp))
-            Text(
-                text = note.description ?: "",
-                textAlign = TextAlign.Start,
-                fontSize = 12.sp,
-                color = grayColor()
-            )
+            note.title?.let {
+                Text(
+                    text = it,
+                    textAlign = TextAlign.Start,
+                    color = primaryDarkColor(),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+            note.description?.let {
+                if (note.title != null)
+                    Spacer(modifier = modifier.padding(4.dp))
+                Text(
+                    text = it,
+                    textAlign = TextAlign.Start,
+                    color = grayColor(),
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    maxLines = 3
+                )
+            }
         }
     }
 }
