@@ -16,9 +16,15 @@ class NoteViewModel(
 
     fun processIntent(intent: NoteViewIntent) {
         when (intent) {
-            is NoteViewIntent.InsertNote -> insert(intent.note)
-            is NoteViewIntent.UpdateNote -> update(intent.note)
+            is NoteViewIntent.SaveNote -> checkInsertOrUpdate(intent.note)
         }
+    }
+
+    private fun checkInsertOrUpdate(note: Note) {
+        if (note.isNew)
+            insert(note)
+        else
+            update(note)
     }
 
     private fun insert(note: Note) {

@@ -1,5 +1,6 @@
 package com.github.mrzahmadi.lightnote.view.screen.note
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,19 +14,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -40,19 +45,20 @@ import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBarWithBack
 
-private var mTitle: String? = null
-private var mDescription: String? = null
+
+private const val TITLE_MAX_LENGTH = 50
+private const val DESCRIPTION_MAX_LENGTH = 10000
 
 @Composable
 fun NoteScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    note: Note?,
+    note: Note,
     noteViewModel: NoteViewModel,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
 
-    mTitle = null
-    mDescription = null
+    val mNote by remember { derivedStateOf { note } }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -60,24 +66,9 @@ fun NoteScreen(
             BaseTopAppBarWithBack(
                 title = stringResource(Screen.Note.title),
                 onClick = {
-                    if (!mTitle.isNullOrEmpty() || !mDescription.isNullOrBlank()) {
-                        if (note != null) {
-                            note.title = mTitle
-                            note.description = mDescription
-                            noteViewModel.processIntent(
-                                NoteViewIntent.UpdateNote(note)
-                            )
-                        } else {
-                            noteViewModel.processIntent(
-                                NoteViewIntent.InsertNote(
-                                    Note(
-                                        title = mTitle,
-                                        description = mDescription
-                                    )
-                                )
-                            )
-                        }
-                    }
+                    noteViewModel.processIntent(
+                        NoteViewIntent.SaveNote(mNote)
+                    )
                     navHostController.popBackStack()
                 }
             )
@@ -94,23 +85,37 @@ fun NoteScreen(
                 TitleTextField(
                     modifier,
                     note
-                )
+                ) {
+                    mNote.title = it.title
+                    mNote.description = it.description
+                }
                 DescriptionTextField(
                     modifier,
                     note
-                )
+                ) {
+                    mNote.title = it.title
+                    mNote.description = it.description
+                }
             }
         })
+
+    BackHandler {
+        noteViewModel.processIntent(
+            NoteViewIntent.SaveNote(mNote)
+        )
+        navHostController.popBackStack()
+    }
+
 }
 
 @Composable
 private fun TitleTextField(
     modifier: Modifier,
-    note: Note?
+    note: Note,
+    processNote: (Note) -> Unit
 ) {
 
-    var title by rememberSaveable { mutableStateOf(note?.title ?: "") }
-    val maxLength = 50
+    var title by rememberSaveable { mutableStateOf(note.title ?: "") }
     TextField(
         modifier = modifier.fillMaxWidth(),
         colors = TextFieldDefaults.colors(
@@ -139,9 +144,10 @@ private fun TitleTextField(
         },
         value = title,
         onValueChange = {
-            if (it.length <= maxLength)
+            if (it.length <= TITLE_MAX_LENGTH)
                 title = it
-            mTitle = title
+            note.title = it
+            processNote(note)
         },
         maxLines = 1,
         singleLine = true,
@@ -151,10 +157,10 @@ private fun TitleTextField(
 @Composable
 private fun DescriptionTextField(
     modifier: Modifier,
-    note: Note?
+    note: Note,
+    processNote: (Note) -> Unit
 ) {
-    val maxLength = 10000
-    var description by rememberSaveable { mutableStateOf(note?.description ?: "") }
+    var description by rememberSaveable { mutableStateOf(note.description ?: "") }
     TextField(
         modifier = modifier.fillMaxSize(),
         colors = TextFieldDefaults.colors(
@@ -181,9 +187,10 @@ private fun DescriptionTextField(
         },
         value = description,
         onValueChange = {
-            if (it.length <= maxLength)
+            if (it.length <= DESCRIPTION_MAX_LENGTH)
                 description = it
-            mDescription = description
+            note.description = it
+            processNote(note)
         }
     )
 }
