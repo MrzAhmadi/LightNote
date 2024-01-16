@@ -1,6 +1,7 @@
 package com.github.mrzahmadi.lightnote.data.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.github.mrzahmadi.lightnote.data.model.Note.Companion.TABLE_NAME
 import com.google.gson.annotations.SerializedName
@@ -16,8 +17,11 @@ data class Note(
     @SerializedName("description")
     var description: String?,
     @SerializedName("isFavorite")
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
 ) : Serializable {
+
+    @Ignore
+    var isNew: Boolean = false
 
     companion object {
         const val TABLE_NAME = "Note"

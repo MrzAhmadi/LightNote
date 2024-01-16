@@ -223,8 +223,15 @@ private fun PrimaryNaveHost(
             val noteObject = navBackStackEntry.arguments?.getString("noteObject")
             val note = if (noteObject != null) {
                 Gson().fromJson(noteObject, Note::class.java)
-            } else
-                null
+            } else {
+                Note(
+                    title = null,
+                    description = null,
+                ).apply {
+                    this.isNew = true
+                }
+            }
+
             val dao = DatabaseBuilder.getInstance(LocalContext.current).noteDao()
             val noteRepository = NoteRepository(dao)
             NoteScreen(
