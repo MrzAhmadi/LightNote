@@ -115,7 +115,7 @@ private fun TitleTextField(
     processNote: (Note) -> Unit
 ) {
 
-    var title by rememberSaveable { mutableStateOf(note?.title ?: "") }
+    var title by rememberSaveable { mutableStateOf(note.title ?: "") }
     TextField(
         modifier = modifier.fillMaxWidth(),
         colors = TextFieldDefaults.colors(
@@ -160,7 +160,7 @@ private fun DescriptionTextField(
     note: Note,
     processNote: (Note) -> Unit
 ) {
-    var description by rememberSaveable { mutableStateOf(note?.description ?: "") }
+    var description by rememberSaveable { mutableStateOf(note.description ?: "") }
     TextField(
         modifier = modifier.fillMaxSize(),
         colors = TextFieldDefaults.colors(
