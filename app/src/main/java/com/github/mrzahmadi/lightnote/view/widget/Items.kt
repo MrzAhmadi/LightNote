@@ -63,7 +63,8 @@ fun NoteItem(
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
-                    )
+                    ),
+                    maxLines = 2
                 )
             }
             note.description?.let {
