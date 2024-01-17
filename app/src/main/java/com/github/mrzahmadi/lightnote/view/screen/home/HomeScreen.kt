@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -26,6 +27,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.github.mrzahmadi.lightnote.R
 import com.github.mrzahmadi.lightnote.data.DataState
 import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.model.Note
@@ -37,6 +39,7 @@ import com.github.mrzahmadi.lightnote.utils.ext.showToast
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
+import com.github.mrzahmadi.lightnote.view.widget.WatermarkMessage
 
 @Composable
 fun HomeScreen(
@@ -65,17 +68,25 @@ fun HomeScreen(
                     }
 
                     is DataState.Success -> {
-                        ShowList(
-                            modifier = modifier
-                                .constrainAs(listRefs) {
-                                    top.linkTo(parent.top)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                },
-                            navHostController = navHostController,
-                            noteList = (state as DataState.Success<List<Note>>).data
-                        )
+                        val noteList = (state as DataState.Success<List<Note>>).data
+                        if (noteList.isEmpty()) {
+                            WatermarkMessage(
+                                modifier,
+                                text = stringResource(id = R.string.empty_note),
+                                icon = Icons.Filled.Face
+                            )
+                        } else
+                            ShowList(
+                                modifier = modifier
+                                    .constrainAs(listRefs) {
+                                        top.linkTo(parent.top)
+                                        bottom.linkTo(parent.bottom)
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                    },
+                                navHostController = navHostController,
+                                noteList = noteList
+                            )
                     }
 
                     is DataState.Error -> {
@@ -113,6 +124,8 @@ fun HomeScreen(
 
     homeViewModel.processIntent(HomeViewIntent.FetchNoteList)
 }
+
+
 
 @Composable
 private fun ShowList(
