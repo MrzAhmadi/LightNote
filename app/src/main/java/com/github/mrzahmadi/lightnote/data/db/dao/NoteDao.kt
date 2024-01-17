@@ -17,4 +17,11 @@ interface NoteDao {
 
     @Update
     suspend fun update(note: Note)
+
+    @Query("SELECT * FROM ${Note.TABLE_NAME} where title=:title")
+    suspend fun findByTitle(title:String): List<Note>
+
+    @Query("SELECT * FROM ${Note.TABLE_NAME} where description=:description")
+    suspend fun findByDescription(description:String): List<Note>
+
 }
