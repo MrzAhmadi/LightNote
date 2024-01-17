@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
+import com.github.mrzahmadi.lightnote.utils.ext.removeEmptyLines
 import com.github.mrzahmadi.lightnote.utils.ext.removeWhitespaces
 import kotlinx.coroutines.launch
 
@@ -24,8 +25,8 @@ class NoteViewModel(
     private fun checkInsertOrUpdate(note: Note) {
         if (note.isNew) {
             if (
-                note.title?.removeWhitespaces().isNullOrEmpty() &&
-                note.description?.removeWhitespaces().isNullOrEmpty()
+                note.title?.removeEmptyLines()?.removeWhitespaces().isNullOrEmpty() &&
+                note.description?.removeEmptyLines()?.removeWhitespaces().isNullOrEmpty()
             )
                 return
             insert(note)
