@@ -22,9 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -35,9 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.R
-import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.model.Note
-import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
 import com.github.mrzahmadi.lightnote.ui.theme.grayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.ui.theme.softGrayColor
@@ -200,8 +196,6 @@ private fun DescriptionTextField(
 @Composable
 fun NoteScreenPreview() {
     val navController: NavHostController = rememberNavController()
-    val dao = DatabaseBuilder.getInstance(LocalContext.current).noteDao()
-    val noteRepository = NoteRepository(dao)
     NoteScreen(
         navHostController = navController,
         note = Note(
@@ -209,12 +203,6 @@ fun NoteScreenPreview() {
             "Title",
             "Description"
         ),
-        noteViewModel = viewModel(
-            factory = NoteViewModel.provideFactory(
-                noteRepository = noteRepository,
-                owner = LocalSavedStateRegistryOwner.current
-            )
-        )
-
+        noteViewModel = viewModel()
     )
 }

@@ -2,8 +2,11 @@ package com.github.mrzahmadi.lightnote.data.repository
 
 import com.github.mrzahmadi.lightnote.data.db.dao.NoteDao
 import com.github.mrzahmadi.lightnote.data.model.Note
+import javax.inject.Inject
 
-class NoteRepository(private val noteDao: NoteDao) {
+class NoteRepository @Inject constructor(
+    private val noteDao: NoteDao
+) {
 
     suspend fun insert(entity: Note) {
         noteDao.insert(entity)
