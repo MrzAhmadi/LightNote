@@ -19,4 +19,9 @@ class NoteRepository @Inject constructor(
     suspend fun update(entity: Note) {
         noteDao.update(entity)
     }
+
+    suspend fun delete(entity: Note) {
+        noteDao.delete(entity)
+    }
+
 }

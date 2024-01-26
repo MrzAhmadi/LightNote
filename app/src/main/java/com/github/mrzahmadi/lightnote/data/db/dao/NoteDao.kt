@@ -1,6 +1,7 @@
 package com.github.mrzahmadi.lightnote.data.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -19,9 +20,12 @@ interface NoteDao {
     suspend fun update(note: Note)
 
     @Query("SELECT * FROM ${Note.TABLE_NAME} where title=:title")
-    suspend fun findByTitle(title:String): List<Note>
+    suspend fun findByTitle(title: String): List<Note>
 
     @Query("SELECT * FROM ${Note.TABLE_NAME} where description=:description")
-    suspend fun findByDescription(description:String): List<Note>
+    suspend fun findByDescription(description: String): List<Note>
+
+    @Delete
+    suspend fun delete(note: Note)
 
 }

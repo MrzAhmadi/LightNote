@@ -60,6 +60,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun delete(note: Note) {
+        viewModelScope.launch {
+            noteRepository.delete(note)
+        }
+    }
 
     private fun changeState(notes: ArrayList<Note>) {
         _state.value = DataState.Loading(true)
