@@ -7,4 +7,6 @@
   <string name="title">Title</string>
   <string name="description">Description</string>
   <string name="empty_note">You didn\'t save any note \n Let\'s make a note with + button</string>
+  <string name="confirm">Confirm</string>
+  <string name="dismiss">Dismiss</string>
 </resources>
