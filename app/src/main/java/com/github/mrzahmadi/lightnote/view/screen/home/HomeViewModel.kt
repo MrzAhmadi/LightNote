@@ -39,6 +39,7 @@ class HomeViewModel @Inject constructor(
     fun processIntent(intent: HomeViewIntent) {
         when (intent) {
             is HomeViewIntent.FetchNoteList -> getAll()
+            is HomeViewIntent.DeleteNote -> delete(intent.note)
         }
     }
 
