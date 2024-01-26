@@ -18,6 +18,7 @@ class NoteViewModel @Inject constructor(
     fun processIntent(intent: NoteViewIntent) {
         when (intent) {
             is NoteViewIntent.SaveNote -> checkInsertOrUpdate(intent.note)
+            is NoteViewIntent.DeleteNote -> delete(intent.note)
         }
     }
 

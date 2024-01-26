@@ -1,5 +1,6 @@
 package com.github.mrzahmadi.lightnote.view.screen.note
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,11 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,7 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.R
@@ -38,8 +43,11 @@ import com.github.mrzahmadi.lightnote.ui.theme.grayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.ui.theme.softGrayColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
+import com.github.mrzahmadi.lightnote.utils.DAY_GROUP_PREVIEW
+import com.github.mrzahmadi.lightnote.utils.NIGHT_GROUP_PREVIEW
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBarWithBack
+import com.github.mrzahmadi.lightnote.view.widget.BaseAlertDialog
+import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 
 
 private const val TITLE_MAX_LENGTH = 50
@@ -50,22 +58,56 @@ fun NoteScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     note: Note,
-    noteViewModel: NoteViewModel,
+    viewModel: NoteViewModel? = null,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
 
     val mNote by remember { derivedStateOf { note } }
 
+    val openDeleteAlertDialog = remember { mutableStateOf(false) }
+    if (openDeleteAlertDialog.value) {
+        BaseAlertDialog(
+            modifier = modifier,
+            dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
+            dialogText = stringResource(id = R.string.delete_note_dialog_text),
+            onDismissRequest = {
+                openDeleteAlertDialog.value = false
+
+            },
+            onConfirmation = {
+                openDeleteAlertDialog.value = false
+                viewModel?.processIntent(NoteViewIntent.DeleteNote(note))
+                navHostController.popBackStack()
+            }
+        )
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BaseTopAppBarWithBack(
+            BaseTopAppBar(
+                modifier = modifier,
                 title = stringResource(Screen.Note.title),
-                onClick = {
-                    noteViewModel.processIntent(
+                navigationIcon = Icons.Filled.ArrowBack,
+                onNavigationIconClick = {
+                    viewModel?.processIntent(
                         NoteViewIntent.SaveNote(mNote)
                     )
                     navHostController.popBackStack()
+                },
+                actions = {
+                    if (!note.isNew) {
+                        IconButton(onClick = {
+                            openDeleteAlertDialog.value = true
+                        }) {
+                            Icon(
+                                imageVector =
+                                Icons.Filled.Delete,
+                                contentDescription = null,
+                                tint = primaryDarkColor()
+                            )
+                        }
+                    }
                 }
             )
         }, content = { paddingValues ->
@@ -96,7 +138,7 @@ fun NoteScreen(
         })
 
     BackHandler {
-        noteViewModel.processIntent(
+        viewModel?.processIntent(
             NoteViewIntent.SaveNote(mNote)
         )
         navHostController.popBackStack()
@@ -191,10 +233,13 @@ private fun DescriptionTextField(
     )
 }
 
-
-@Preview(showSystemUi = true)
+@Preview(
+    showSystemUi = true,
+    group = DAY_GROUP_PREVIEW,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
 @Composable
-fun NoteScreenPreview() {
+fun NewNoteScreenDayPreview() {
     val navController: NavHostController = rememberNavController()
     NoteScreen(
         navHostController = navController,
@@ -202,7 +247,64 @@ fun NoteScreenPreview() {
             1,
             "Title",
             "Description"
-        ),
-        noteViewModel = viewModel()
+        ).apply {
+            this.isNew = true
+        }
+    )
+}
+
+@Preview(
+    showSystemUi = true,
+    group = NIGHT_GROUP_PREVIEW,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun NewNoteScreenNightPreview() {
+    val navController: NavHostController = rememberNavController()
+    NoteScreen(
+        navHostController = navController,
+        note = Note(
+            1,
+            "Title",
+            "Description"
+        ).apply {
+            this.isNew = true
+        }
+    )
+}
+
+@Preview(
+    showSystemUi = true,
+    group = DAY_GROUP_PREVIEW,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun NoteScreenDayPreview() {
+    val navController: NavHostController = rememberNavController()
+    NoteScreen(
+        navHostController = navController,
+        note = Note(
+            1,
+            "Title",
+            "Description"
+        )
+    )
+}
+
+@Preview(
+    showSystemUi = true,
+    group = NIGHT_GROUP_PREVIEW,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun NoteScreenNightPreview() {
+    val navController: NavHostController = rememberNavController()
+    NoteScreen(
+        navHostController = navController,
+        note = Note(
+            1,
+            "Title",
+            "Description"
+        )
     )
 }

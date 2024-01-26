@@ -9,4 +9,6 @@
   <string name="empty_note">You didn\'t save any note \n Let\'s make a note with + button</string>
   <string name="confirm">Confirm</string>
   <string name="dismiss">Dismiss</string>
+  <string name="delete_note_dialog_title">Delete Note</string>
+  <string name="delete_note_dialog_text">Are you sure you want to delete this note?</string>
 </resources>

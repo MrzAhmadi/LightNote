@@ -227,7 +227,7 @@ class MainActivity : ComponentActivity() {
                 NoteScreen(
                     navHostController = navController,
                     note = note,
-                    noteViewModel = noteViewModel
+                    viewModel = noteViewModel
                 )
             }
         }

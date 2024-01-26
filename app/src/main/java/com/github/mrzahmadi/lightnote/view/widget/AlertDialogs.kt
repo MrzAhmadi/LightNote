@@ -8,6 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,6 +20,7 @@ import com.github.mrzahmadi.lightnote.utils.NIGHT_GROUP_PREVIEW
 
 @Composable
 fun BaseAlertDialog(
+    modifier: Modifier = Modifier,
     dialogTitle: String,
     dialogText: String,
     confirmButtonText: String = stringResource(id = R.string.confirm),
@@ -28,6 +30,7 @@ fun BaseAlertDialog(
     onConfirmation: (() -> Unit)? = null,
 ) {
     AlertDialog(
+        modifier = modifier,
         icon = {
             if (icon != null) {
                 Icon(
