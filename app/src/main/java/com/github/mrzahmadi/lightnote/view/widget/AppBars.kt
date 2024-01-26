@@ -2,11 +2,13 @@ package com.github.mrzahmadi.lightnote.view.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,32 +29,10 @@ import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 @Composable
 fun BaseTopAppBar(
     modifier: Modifier = Modifier,
-    title: String = "Title"
-) {
-    Column(modifier) {
-        TopAppBar(
-            title = { Text(text = title) },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = appBarColor(),
-                titleContentColor = primaryDarkColor()
-            )
-        )
-        Spacer(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(appBarDividerColor())
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BaseTopAppBar(
-    modifier: Modifier = Modifier,
     title: String = "Title",
-    icon: ImageVector,
-    onClick: () -> Unit
+    navigationIcon: ImageVector? = null,
+    onNavigationIconClick: (() -> Unit)? = {},
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     Column(modifier) {
         TopAppBar(
@@ -62,14 +42,17 @@ fun BaseTopAppBar(
                 titleContentColor = primaryDarkColor()
             ),
             navigationIcon = {
-                IconButton(onClick = onClick) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = title,
-                        tint = primaryDarkColor()
-                    )
+                if (navigationIcon != null) {
+                    IconButton(onClick = onNavigationIconClick ?: { }) {
+                        Icon(
+                            imageVector = navigationIcon,
+                            contentDescription = title,
+                            tint = primaryDarkColor()
+                        )
+                    }
                 }
-            }
+            },
+            actions = actions
         )
         Spacer(
             modifier = modifier
@@ -80,6 +63,7 @@ fun BaseTopAppBar(
     }
 }
 
+
 @Composable
 fun BaseTopAppBarWithBack(
     modifier: Modifier = Modifier,
@@ -87,10 +71,10 @@ fun BaseTopAppBarWithBack(
     onClick: () -> Unit
 ) {
     BaseTopAppBar(
-        modifier,
-        title,
-        Icons.Filled.ArrowBack,
-        onClick
+        modifier = modifier,
+        title = title,
+        navigationIcon = Icons.Filled.ArrowBack,
+        onNavigationIconClick = onClick,
     )
 }
 
@@ -102,9 +86,26 @@ fun BaseTopAppBarPreview() {
 
 @Preview
 @Composable
-fun BaseTopAppBarWithIcon() {
+fun BaseTopAppBarWithNavigationIcon() {
     BaseTopAppBar(
-        icon = Icons.Filled.ArrowBack,
-        onClick = {}
+        navigationIcon = Icons.Filled.ArrowBack,
+    )
+}
+
+@Preview
+@Composable
+fun BaseTopAppBarWithNavigationAndActionIcon() {
+    BaseTopAppBar(
+        navigationIcon = Icons.Filled.ArrowBack,
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector =
+                    Icons.Filled.Delete,
+                    contentDescription = null,
+                    tint = primaryDarkColor()
+                )
+            }
+        }
     )
 }
