@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -20,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,23 +66,11 @@ fun NoteScreen(
 ) {
 
     val mNote by remember { derivedStateOf { note } }
+    val isFavorite = remember { mutableStateOf(note.isFavorite) }
 
     val openDeleteAlertDialog = remember { mutableStateOf(false) }
     if (openDeleteAlertDialog.value) {
-        BaseAlertDialog(
-            modifier = modifier,
-            dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
-            dialogText = stringResource(id = R.string.delete_note_dialog_text),
-            onDismissRequest = {
-                openDeleteAlertDialog.value = false
-
-            },
-            onConfirmation = {
-                openDeleteAlertDialog.value = false
-                viewModel?.processIntent(NoteViewIntent.DeleteNote(note))
-                navHostController.popBackStack()
-            }
-        )
+        ShowDeleteDialog(modifier, openDeleteAlertDialog, viewModel, note, navHostController)
     }
 
     Scaffold(
@@ -96,18 +87,7 @@ fun NoteScreen(
                     navHostController.popBackStack()
                 },
                 actions = {
-                    if (!note.isNew) {
-                        IconButton(onClick = {
-                            openDeleteAlertDialog.value = true
-                        }) {
-                            Icon(
-                                imageVector =
-                                Icons.Filled.Delete,
-                                contentDescription = null,
-                                tint = primaryDarkColor()
-                            )
-                        }
-                    }
+                    ToolbarActions(note, openDeleteAlertDialog, isFavorite, mNote)
                 }
             )
         }, content = { paddingValues ->
@@ -144,6 +124,74 @@ fun NoteScreen(
         navHostController.popBackStack()
     }
 
+}
+
+@Composable
+private fun ToolbarActions(
+    note: Note,
+    openDeleteAlertDialog: MutableState<Boolean>,
+    isFavorite: MutableState<Boolean>,
+    mNote: Note
+) {
+    if (!note.isNew) {
+        IconButton(onClick = {
+            openDeleteAlertDialog.value = true
+        }) {
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = null,
+                tint = primaryDarkColor()
+            )
+        }
+    }
+    if (isFavorite.value) {
+        IconButton(onClick = {
+            mNote.isFavorite = false
+            isFavorite.value = false
+        }) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = null,
+                tint = primaryDarkColor()
+            )
+        }
+    }
+    if (!isFavorite.value) {
+        IconButton(onClick = {
+            mNote.isFavorite = true
+            isFavorite.value = true
+        }) {
+            Icon(
+                imageVector = Icons.Filled.FavoriteBorder,
+                contentDescription = null,
+                tint = primaryDarkColor()
+            )
+        }
+    }
+}
+
+@Composable
+private fun ShowDeleteDialog(
+    modifier: Modifier,
+    openDeleteAlertDialog: MutableState<Boolean>,
+    viewModel: NoteViewModel?,
+    note: Note,
+    navHostController: NavHostController
+) {
+    BaseAlertDialog(
+        modifier = modifier,
+        dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
+        dialogText = stringResource(id = R.string.delete_note_dialog_text),
+        onDismissRequest = {
+            openDeleteAlertDialog.value = false
+
+        },
+        onConfirmation = {
+            openDeleteAlertDialog.value = false
+            viewModel?.processIntent(NoteViewIntent.DeleteNote(note))
+            navHostController.popBackStack()
+        }
+    )
 }
 
 @Composable

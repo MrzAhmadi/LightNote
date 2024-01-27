@@ -17,7 +17,7 @@ data class Note(
     @SerializedName("description")
     var description: String?,
     @SerializedName("isFavorite")
-    val isFavorite: Boolean = false,
+    var isFavorite: Boolean = false,
 ) : Serializable {
 
     @Ignore
