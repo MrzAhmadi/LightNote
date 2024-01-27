@@ -7,11 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,8 +26,6 @@ import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.R
 import com.github.mrzahmadi.lightnote.data.DataState
 import com.github.mrzahmadi.lightnote.data.model.Note
-import com.github.mrzahmadi.lightnote.ui.theme.primaryBlueColor
-import com.github.mrzahmadi.lightnote.ui.theme.whiteColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.utils.ext.showToast
 import com.github.mrzahmadi.lightnote.view.Screen
@@ -49,78 +43,49 @@ fun FavoriteScreen(
 
     val state by viewModel.state.collectAsState()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            BaseTopAppBar(title = stringResource(id = Screen.Favorite.title))
-        }, content = { paddingValues ->
-            ConstraintLayout(
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(windowBackgroundColor())
-                    .padding(paddingValues)
-            ) {
-                val (floatingRefs, listRefs) = createRefs()
+    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+        BaseTopAppBar(title = stringResource(id = Screen.Favorite.title))
+    }, content = { paddingValues ->
+        ConstraintLayout(
+            modifier = modifier
+                .fillMaxSize()
+                .background(windowBackgroundColor())
+                .padding(paddingValues)
+        ) {
+            val listRefs = createRef()
 
-                when (state) {
-                    is DataState.Loading -> {
-                    }
-
-                    is DataState.Empty -> {
-                        WatermarkMessage(
-                            modifier,
-                            text = stringResource(id = R.string.empty_note),
-                            icon = Icons.Filled.Face
-                        )
-                    }
-
-                    is DataState.Success -> {
-                        val noteList = (state as DataState.Success<List<Note>>).data
-                        ShowList(
-                            modifier = modifier
-                                .constrainAs(listRefs) {
-                                    top.linkTo(parent.top)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                },
-                            navHostController = navHostController,
-                            noteList = noteList
-                        )
-                    }
-
-                    is DataState.Error -> {
-                        val error = (state as DataState.Error).error
-                        error.localizedMessage?.let { LocalContext.current.showToast(it) }
-                    }
-
+            when (state) {
+                is DataState.Loading -> {
                 }
 
-                FloatingActionButton(
-                    modifier = modifier
-                        .constrainAs(floatingRefs) {
-                            bottom.linkTo(parent.bottom, 16.dp)
-                            end.linkTo(parent.end, 16.dp)
-                        },
-                    elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 6.dp,
-                        focusedElevation = 12.dp,
-                        pressedElevation = 8.dp,
-                        hoveredElevation = 8.dp
-                    ),
-                    contentColor = whiteColor(),
-                    containerColor = primaryBlueColor(),
-                    onClick = {
-                        navHostController.navigate(Screen.Note.route)
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "add"
+                is DataState.Empty -> {
+                    WatermarkMessage(
+                        modifier,
+                        text = stringResource(id = R.string.no_favorite_note),
+                        icon = Icons.Filled.Face
                     )
                 }
+
+                is DataState.Success -> {
+                    val noteList = (state as DataState.Success<List<Note>>).data
+                    ShowList(
+                        modifier = modifier.constrainAs(listRefs) {
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }, navHostController = navHostController, noteList = noteList
+                    )
+                }
+
+                is DataState.Error -> {
+                    val error = (state as DataState.Error).error
+                    error.localizedMessage?.let { LocalContext.current.showToast(it) }
+                }
+
             }
-        })
+        }
+    })
 
     LaunchedEffect(null) {
         viewModel.processIntent(FavoriteViewIntent.GetFavoriteNoteList)
@@ -130,28 +95,20 @@ fun FavoriteScreen(
 
 @Composable
 private fun ShowList(
-    modifier: Modifier = Modifier,
-    navHostController: NavHostController,
-    noteList: List<Note>
+    modifier: Modifier = Modifier, navHostController: NavHostController, noteList: List<Note>
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(
-            horizontal = 16.dp,
-            vertical = 20.dp
+            horizontal = 16.dp, vertical = 20.dp
         )
     ) {
-        items(
-            items = noteList,
-            key = { it.id },
-            itemContent = { lazyItem ->
-                NoteItem(
-                    note = lazyItem,
-                    navHostController = navHostController
-                )
-            }
-        )
+        items(items = noteList, key = { it.id }, itemContent = { lazyItem ->
+            NoteItem(
+                note = lazyItem, navHostController = navHostController
+            )
+        })
     }
 }
 
@@ -160,7 +117,6 @@ private fun ShowList(
 fun FavoriteScreenPreview() {
     val navController: NavHostController = rememberNavController()
     FavoriteScreen(
-        navHostController = navController,
-        viewModel = viewModel()
+        navHostController = navController, viewModel = viewModel()
     )
 }
