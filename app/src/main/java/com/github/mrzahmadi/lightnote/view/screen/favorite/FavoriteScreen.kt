@@ -1,4 +1,4 @@
-package com.github.mrzahmadi.lightnote.view.screen.home
+package com.github.mrzahmadi.lightnote.view.screen.favorite
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,11 +39,12 @@ import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
 import com.github.mrzahmadi.lightnote.view.widget.WatermarkMessage
 
+
 @Composable
-fun HomeScreen(
+fun FavoriteScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: HomeViewModel,
+    viewModel: FavoriteViewModel,
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -51,7 +52,7 @@ fun HomeScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            BaseTopAppBar(title = stringResource(id = Screen.Home.title))
+            BaseTopAppBar(title = stringResource(id = Screen.Favorite.title))
         }, content = { paddingValues ->
             ConstraintLayout(
                 modifier = modifier
@@ -121,7 +122,7 @@ fun HomeScreen(
         })
 
     LaunchedEffect(state) {
-        viewModel.processIntent(HomeViewIntent.GetNoteList)
+        viewModel.processIntent(FavoriteViewIntent.GetFavoriteNoteList)
     }
 }
 
@@ -155,9 +156,9 @@ private fun ShowList(
 
 @Preview(showSystemUi = true)
 @Composable
-fun HomeScreenPreview() {
+fun FavoriteScreenPreview() {
     val navController: NavHostController = rememberNavController()
-    HomeScreen(
+    FavoriteScreen(
         navHostController = navController,
         viewModel = viewModel()
     )

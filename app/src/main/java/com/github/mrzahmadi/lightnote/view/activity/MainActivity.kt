@@ -51,8 +51,9 @@ import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.utils.ext.getRouteWithoutParams
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.screen.FavoriteScreen
 import com.github.mrzahmadi.lightnote.view.screen.ProfileScreen
+import com.github.mrzahmadi.lightnote.view.screen.favorite.FavoriteScreen
+import com.github.mrzahmadi.lightnote.view.screen.favorite.FavoriteViewModel
 import com.github.mrzahmadi.lightnote.view.screen.home.HomeScreen
 import com.github.mrzahmadi.lightnote.view.screen.home.HomeViewModel
 import com.github.mrzahmadi.lightnote.view.screen.note.NoteScreen
@@ -64,6 +65,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
     private val noteViewModel: NoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -205,11 +207,14 @@ class MainActivity : ComponentActivity() {
             composable(Screen.Home.route) {
                 HomeScreen(
                     navHostController = navController,
-                    homeViewModel = homeViewModel
+                    viewModel = homeViewModel
                 )
             }
             composable(Screen.Favorite.route) {
-                FavoriteScreen()
+                FavoriteScreen(
+                    navHostController = navController,
+                    viewModel = favoriteViewModel
+                )
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()

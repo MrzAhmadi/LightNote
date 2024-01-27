@@ -1,4 +1,4 @@
-package com.github.mrzahmadi.lightnote.view.screen.home
+package com.github.mrzahmadi.lightnote.view.screen.favorite
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class FavoriteViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
     private val savedStateHandle: SavedStateHandle = SavedStateHandle()
 ) : ViewModel() {
@@ -24,30 +24,30 @@ class HomeViewModel @Inject constructor(
 
 
     private fun saveListState(items: List<Note>) {
-        savedStateHandle[NOTE_LIST_KEY] = items
+        savedStateHandle[FAVORITE_NOTE_LIST_KEY] = items
     }
 
 
     private fun getSavedListState(): List<Note>? {
-        savedStateHandle.get<List<Note>>(NOTE_LIST_KEY)?.let { notes ->
+        savedStateHandle.get<List<Note>>(FAVORITE_NOTE_LIST_KEY)?.let { notes ->
             return notes
         }
         return null
     }
 
 
-    fun processIntent(intent: HomeViewIntent) {
+    fun processIntent(intent: FavoriteViewIntent) {
         when (intent) {
-            is HomeViewIntent.GetNoteList -> getAll()
-            is HomeViewIntent.DeleteNote -> delete(intent.note)
+            is FavoriteViewIntent.GetFavoriteNoteList -> getFavoriteNoteList()
+            is FavoriteViewIntent.DeleteNote -> delete(intent.note)
         }
     }
 
 
-    private fun getAll() {
+    private fun getFavoriteNoteList() {
         viewModelScope.launch {
             val savedState = getSavedListState()?.let { ArrayList(it) }
-            val repoList = ArrayList(noteRepository.getAll())
+            val repoList = ArrayList(noteRepository.getFavoriteList())
             if (savedState.isNullOrEmpty()) {
                 changeState(repoList)
                 saveListState(repoList)
@@ -78,7 +78,7 @@ class HomeViewModel @Inject constructor(
 
 
     companion object {
-        private const val NOTE_LIST_KEY = "NOTE_LIST_STATE"
+        private const val FAVORITE_NOTE_LIST_KEY = "FAVORITE_NOTE_LIST_STATE"
     }
 
 }
