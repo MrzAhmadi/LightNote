@@ -49,6 +49,7 @@ class FavoriteViewModel @Inject constructor(
             val savedState = getSavedListState()?.let { ArrayList(it) }
             val repoList = ArrayList(noteRepository.getFavoriteList())
             if (savedState.isNullOrEmpty()) {
+                _state.value = DataState.Loading(true)
                 changeState(repoList)
                 saveListState(repoList)
             } else {
@@ -68,11 +69,14 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun changeState(notes: ArrayList<Note>) {
-        _state.value = DataState.Loading(true)
-        try {
-            _state.value = DataState.Success(notes)
-        } catch (e: Exception) {
-            _state.value = DataState.Error(e)
+        if (notes.isEmpty()) {
+            _state.value = DataState.Empty(true)
+        } else {
+            try {
+                _state.value = DataState.Success(notes)
+            } catch (e: Exception) {
+                _state.value = DataState.Error(e)
+            }
         }
     }
 

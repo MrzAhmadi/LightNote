@@ -66,26 +66,27 @@ fun FavoriteScreen(
                     is DataState.Loading -> {
                     }
 
+                    is DataState.Empty -> {
+                        WatermarkMessage(
+                            modifier,
+                            text = stringResource(id = R.string.empty_note),
+                            icon = Icons.Filled.Face
+                        )
+                    }
+
                     is DataState.Success -> {
                         val noteList = (state as DataState.Success<List<Note>>).data
-                        if (noteList.isEmpty()) {
-                            WatermarkMessage(
-                                modifier,
-                                text = stringResource(id = R.string.empty_note),
-                                icon = Icons.Filled.Face
-                            )
-                        } else
-                            ShowList(
-                                modifier = modifier
-                                    .constrainAs(listRefs) {
-                                        top.linkTo(parent.top)
-                                        bottom.linkTo(parent.bottom)
-                                        start.linkTo(parent.start)
-                                        end.linkTo(parent.end)
-                                    },
-                                navHostController = navHostController,
-                                noteList = noteList
-                            )
+                        ShowList(
+                            modifier = modifier
+                                .constrainAs(listRefs) {
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                },
+                            navHostController = navHostController,
+                            noteList = noteList
+                        )
                     }
 
                     is DataState.Error -> {
@@ -121,7 +122,7 @@ fun FavoriteScreen(
             }
         })
 
-    LaunchedEffect(state) {
+    LaunchedEffect(null) {
         viewModel.processIntent(FavoriteViewIntent.GetFavoriteNoteList)
     }
 }
