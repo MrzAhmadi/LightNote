@@ -9,27 +9,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.mrzahmadi.lightnote.R
 import com.github.mrzahmadi.lightnote.ui.theme.lightGrayColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 
 @Composable
 fun WatermarkMessage(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    icon: Painter,
     text: String
 ) {
     Column(
@@ -44,7 +44,7 @@ fun WatermarkMessage(
             modifier = modifier
                 .width(76.dp)
                 .height(76.dp),
-            imageVector = icon,
+            painter = icon,
             tint = lightGrayColor(),
             contentDescription = text
         )
@@ -66,7 +66,7 @@ fun WatermarkMessage(
 @Composable
 private fun WatermarkMessagePreview() {
     WatermarkMessage(
-        icon = Icons.Filled.Face,
+        icon = painterResource(id = R.drawable.t_rex),
         text = "The Nice Description"
     )
 }

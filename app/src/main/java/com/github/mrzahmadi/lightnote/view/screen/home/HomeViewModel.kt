@@ -18,7 +18,6 @@ class HomeViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle = SavedStateHandle()
 ) : ViewModel() {
 
-
     private val _state = MutableStateFlow<DataState<List<Note>>>(DataState.Loading(true))
     val state: StateFlow<DataState<List<Note>>> = _state
 
@@ -27,7 +26,6 @@ class HomeViewModel @Inject constructor(
         savedStateHandle[NOTE_LIST_KEY] = items
     }
 
-
     private fun getSavedListState(): List<Note>? {
         savedStateHandle.get<List<Note>>(NOTE_LIST_KEY)?.let { notes ->
             return notes
@@ -35,14 +33,12 @@ class HomeViewModel @Inject constructor(
         return null
     }
 
-
     fun processIntent(intent: HomeViewIntent) {
         when (intent) {
             is HomeViewIntent.GetNoteList -> getAll()
             is HomeViewIntent.DeleteNote -> delete(intent.ids)
         }
     }
-
 
     private fun getAll() {
         viewModelScope.launch {
@@ -84,7 +80,6 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
 
     companion object {
         private const val NOTE_LIST_KEY = "NOTE_LIST_STATE"

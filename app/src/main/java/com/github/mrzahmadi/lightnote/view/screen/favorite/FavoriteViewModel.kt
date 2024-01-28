@@ -18,15 +18,12 @@ class FavoriteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle = SavedStateHandle()
 ) : ViewModel() {
 
-
     private val _state = MutableStateFlow<DataState<List<Note>>>(DataState.Loading(true))
     val state: StateFlow<DataState<List<Note>>> = _state
-
 
     private fun saveListState(items: List<Note>) {
         savedStateHandle[FAVORITE_NOTE_LIST_KEY] = items
     }
-
 
     private fun getSavedListState(): List<Note>? {
         savedStateHandle.get<List<Note>>(FAVORITE_NOTE_LIST_KEY)?.let { notes ->
@@ -35,14 +32,12 @@ class FavoriteViewModel @Inject constructor(
         return null
     }
 
-
     fun processIntent(intent: FavoriteViewIntent) {
         when (intent) {
             is FavoriteViewIntent.GetFavoriteNoteList -> getFavoriteNoteList()
             is FavoriteViewIntent.DeleteNote -> delete(intent.note)
         }
     }
-
 
     private fun getFavoriteNoteList() {
         viewModelScope.launch {
@@ -85,7 +80,6 @@ class FavoriteViewModel @Inject constructor(
             }
         }
     }
-
 
     companion object {
         private const val FAVORITE_NOTE_LIST_KEY = "FAVORITE_NOTE_LIST_STATE"
