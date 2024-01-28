@@ -1,5 +1,7 @@
 package com.github.mrzahmadi.lightnote.view.widget
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,9 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,23 +26,25 @@ import androidx.navigation.NavHostController
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.cardBackgroundColor
 import com.github.mrzahmadi.lightnote.ui.theme.grayColor
+import com.github.mrzahmadi.lightnote.ui.theme.lightGrayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.view.Screen
+import com.github.mrzahmadi.lightnote.view.screen.home.selectedNoteList
 import com.google.gson.Gson
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteItem(
     modifier: Modifier = Modifier,
     note: Note,
     navHostController: NavHostController? = null,
+    changeSelected: ((Note) -> Unit)? = null
 ) {
+
+    var isSelected by remember { mutableStateOf(note.isSelected) }
+
     Card(
-        onClick = {
-            navHostController?.navigate(
-                "${Screen.Note.route}?${Gson().toJson(note)}"
-            )
-        }, modifier = modifier
+        modifier = modifier
             .padding(
                 top = 8.dp,
                 bottom = 8.dp
@@ -45,13 +52,39 @@ fun NoteItem(
             .fillMaxWidth(), shape = RoundedCornerShape(
             size = 4.dp,
         ), colors = CardDefaults.cardColors(
-            cardBackgroundColor()
+            if (!isSelected)
+                cardBackgroundColor()
+            else
+                lightGrayColor()
         ), elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
         )
     ) {
         Column(
             modifier = modifier
+                .combinedClickable(
+                    onClick = {
+                        if (isSelected) {
+                            isSelected = false
+                            note.isSelected = false
+                            changeSelected?.let { it(note) }
+                        } else {
+                            if (selectedNoteList.isNotEmpty()) {
+                                isSelected = true
+                                note.isSelected = true
+                                changeSelected?.let { it(note) }
+                            } else
+                                navHostController?.navigate(
+                                    "${Screen.Note.route}?${Gson().toJson(note)}"
+                                )
+                        }
+                    },
+                    onLongClick = {
+                        isSelected = !isSelected
+                        note.isSelected = isSelected
+                        changeSelected?.let { it(note) }
+                    }
+                )
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {

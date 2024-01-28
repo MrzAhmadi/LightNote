@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
     fun processIntent(intent: HomeViewIntent) {
         when (intent) {
             is HomeViewIntent.GetNoteList -> getAll()
-            is HomeViewIntent.DeleteNote -> delete(intent.note)
+            is HomeViewIntent.DeleteNote -> delete(intent.ids)
         }
     }
 
@@ -61,9 +61,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun delete(note: Note) {
+    private fun delete(noteList: ArrayList<Note>) {
         viewModelScope.launch {
-            noteRepository.delete(note)
+            val ids = noteList.filter {
+                it.isSelected
+            }.flatMap {
+                listOf(it.id)
+            }
+            noteRepository.delete(ids)
+            getAll()
         }
     }
 

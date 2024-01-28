@@ -24,6 +24,10 @@ class NoteRepository @Inject constructor(
         noteDao.delete(entity)
     }
 
+    suspend fun delete(ids: List<Int>) {
+        noteDao.delete(ids)
+    }
+
     suspend fun getFavoriteList(): List<Note> {
         return noteDao.getFavoriteList()
     }

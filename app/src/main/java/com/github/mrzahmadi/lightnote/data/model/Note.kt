@@ -3,11 +3,10 @@ package com.github.mrzahmadi.lightnote.data.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.github.mrzahmadi.lightnote.data.model.Note.Companion.TABLE_NAME
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-@Entity(tableName = TABLE_NAME)
+@Entity(tableName = "Note")
 data class Note(
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -23,8 +22,7 @@ data class Note(
     @Ignore
     var isNew: Boolean = false
 
-    companion object {
-        const val TABLE_NAME = "Note"
-    }
+    @Ignore
+    var isSelected: Boolean = false
 
 }

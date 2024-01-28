@@ -13,4 +13,6 @@
   <string name="delete_note_dialog_text">Are you sure you want to delete this note?</string>
   <string name="no_favorite_note">You don\'t have any favorite note \nYou can add to
     favorite list by ♡︎ action button</string>
+  <string name="delete_note_dialog_text_count">Are you sure you want to delete these %1$d
+    notes?</string>
 </resources>

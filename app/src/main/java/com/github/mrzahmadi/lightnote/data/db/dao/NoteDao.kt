@@ -13,22 +13,25 @@ interface NoteDao {
     @Insert
     suspend fun insert(note: Note)
 
-    @Query("SELECT * FROM ${Note.TABLE_NAME}")
+    @Query("SELECT * FROM Note")
     suspend fun getAll(): List<Note>
 
     @Update
     suspend fun update(note: Note)
 
-    @Query("SELECT * FROM ${Note.TABLE_NAME} where title=:title")
+    @Query("SELECT * FROM Note where title=:title")
     suspend fun findByTitle(title: String): List<Note>
 
-    @Query("SELECT * FROM ${Note.TABLE_NAME} where description=:description")
+    @Query("SELECT * FROM Note where description=:description")
     suspend fun findByDescription(description: String): List<Note>
 
     @Delete
     suspend fun delete(note: Note)
 
-    @Query("SELECT * FROM ${Note.TABLE_NAME} where isFavorite=true")
+    @Query("delete from Note where id in (:ids)")
+    suspend fun delete(ids: List<Int>)
+
+    @Query("SELECT * FROM Note where isFavorite=true")
     suspend fun getFavoriteList(): List<Note>
 
 }

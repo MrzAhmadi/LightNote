@@ -5,5 +5,5 @@ import com.github.mrzahmadi.lightnote.data.model.Note
 
 sealed class HomeViewIntent {
     data object GetNoteList : HomeViewIntent()
-    data class DeleteNote(val note: Note) : HomeViewIntent()
+    data class DeleteNote(val ids: ArrayList<Note>) : HomeViewIntent()
 }
