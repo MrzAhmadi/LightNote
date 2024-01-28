@@ -1,6 +1,5 @@
 package com.github.mrzahmadi.lightnote.view.screen.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,6 +57,7 @@ fun HomeScreen(
 ) {
 
     val state by viewModel.state.collectAsState()
+
     var isSelectedToolbarEnabled by remember { mutableStateOf(false) }
 
     val openDeleteAlertDialog = remember { mutableStateOf(false) }
@@ -75,24 +75,7 @@ fun HomeScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (isSelectedToolbarEnabled.not())
-                BaseTopAppBar(title = stringResource(id = Screen.Home.title))
-            else
-                BaseTopAppBar(
-                    title = stringResource(id = Screen.Home.title),
-                    actions = {
-                        IconButton(onClick = {
-                            openDeleteAlertDialog.value = true
-                        }) {
-                            Icon(
-                                imageVector =
-                                Icons.Filled.Delete,
-                                contentDescription = null,
-                                tint = primaryDarkColor()
-                            )
-                        }
-                    }
-                )
+            AppBars(isSelectedToolbarEnabled, openDeleteAlertDialog)
         }, content = { paddingValues ->
             ConstraintLayout(
                 modifier = modifier
@@ -170,6 +153,31 @@ fun HomeScreen(
 }
 
 @Composable
+private fun AppBars(
+    isSelectedToolbarEnabled: Boolean,
+    openDeleteAlertDialog: MutableState<Boolean>
+) {
+    if (isSelectedToolbarEnabled.not())
+        BaseTopAppBar(title = stringResource(id = Screen.Home.title))
+    else
+        BaseTopAppBar(
+            title = stringResource(id = Screen.Home.title),
+            actions = {
+                IconButton(onClick = {
+                    openDeleteAlertDialog.value = true
+                }) {
+                    Icon(
+                        imageVector =
+                        Icons.Filled.Delete,
+                        contentDescription = null,
+                        tint = primaryDarkColor()
+                    )
+                }
+            }
+        )
+}
+
+@Composable
 private fun ShowDeleteDialog(
     modifier: Modifier,
     openDeleteAlertDialog: MutableState<Boolean>,
@@ -179,9 +187,12 @@ private fun ShowDeleteDialog(
         modifier = modifier,
         dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
         dialogText = if (selectedNoteList.size > 1)
-            stringResource(id = R.string.delete_note_dialog_text_count, selectedNoteList.size)
+            stringResource(
+                R.string.delete_note_dialog_text_count,
+                selectedNoteList.size
+            )
         else
-            stringResource(id = R.string.delete_note_dialog_text),
+            stringResource(R.string.delete_note_dialog_text),
         onDismissRequest = {
             openDeleteAlertDialog.value = false
 
@@ -219,12 +230,18 @@ private fun ShowList(
                     navHostController = navHostController,
                     changeSelected = {
                         selectedNoteList.clear()
-                        noteList.forEach {
-                            if (it.isSelected)
-                                selectedNoteList.add(it)
-                        }
-                        Log.v("Selectedsadfs", selectedNoteList.toString())
+                        selectedNoteList = ArrayList(
+                            noteList.filter {
+                                it.isSelected
+                            }
+                        )
                         changeSelectedStatus()
+                    },
+                    checkOtherItemsSelected = {
+                        val selectedList = noteList.filter {
+                            it.isSelected
+                        }
+                        selectedList.isNotEmpty()
                     }
                 )
             }

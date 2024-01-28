@@ -29,7 +29,6 @@ import com.github.mrzahmadi.lightnote.ui.theme.grayColor
 import com.github.mrzahmadi.lightnote.ui.theme.lightGrayColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.screen.home.selectedNoteList
 import com.google.gson.Gson
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -38,7 +37,8 @@ fun NoteItem(
     modifier: Modifier = Modifier,
     note: Note,
     navHostController: NavHostController? = null,
-    changeSelected: ((Note) -> Unit)? = null
+    changeSelected: ((Note) -> Unit)? = null,
+    checkOtherItemsSelected: (() -> Boolean)? = null
 ) {
 
     var isSelected by remember { mutableStateOf(note.isSelected) }
@@ -69,7 +69,9 @@ fun NoteItem(
                             note.isSelected = false
                             changeSelected?.let { it(note) }
                         } else {
-                            if (selectedNoteList.isNotEmpty()) {
+                            val otherItemsSelected =
+                                checkOtherItemsSelected?.invoke() ?: false
+                            if (otherItemsSelected) {
                                 isSelected = true
                                 note.isSelected = true
                                 changeSelected?.let { it(note) }

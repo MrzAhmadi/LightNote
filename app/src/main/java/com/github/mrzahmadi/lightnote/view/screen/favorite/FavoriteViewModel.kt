@@ -62,9 +62,15 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun delete(note: Note) {
+    private fun delete(noteList: ArrayList<Note>) {
         viewModelScope.launch {
-            noteRepository.delete(note)
+            val ids = noteList.filter {
+                it.isSelected
+            }.flatMap {
+                listOf(it.id)
+            }
+            noteRepository.delete(ids)
+            getFavoriteNoteList()
         }
     }
 
