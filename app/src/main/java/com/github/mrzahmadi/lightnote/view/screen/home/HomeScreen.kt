@@ -58,7 +58,7 @@ fun HomeScreen(
 
     val state by viewModel.state.collectAsState()
 
-    var isSelectedToolbarEnabled by remember { mutableStateOf(false) }
+    var isSelectedToolbarEnabled by remember { mutableStateOf(selectedNoteList.isEmpty().not()) }
 
     val openDeleteAlertDialog = remember { mutableStateOf(false) }
     if (openDeleteAlertDialog.value) {
