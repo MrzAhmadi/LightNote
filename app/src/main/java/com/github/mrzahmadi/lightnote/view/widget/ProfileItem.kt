@@ -24,6 +24,8 @@ import com.github.mrzahmadi.lightnote.data.model.Option
 import com.github.mrzahmadi.lightnote.ui.theme.cardBackgroundColor
 import com.github.mrzahmadi.lightnote.ui.theme.primaryDarkColor
 import com.github.mrzahmadi.lightnote.ui.theme.softGrayColor
+import com.github.mrzahmadi.lightnote.utils.DAY_GROUP_PREVIEW
+import com.github.mrzahmadi.lightnote.utils.NIGHT_GROUP_PREVIEW
 
 @Composable
 fun ProfileItem(
@@ -103,13 +105,14 @@ fun ProfileItem(
 }
 
 @Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    group = DAY_GROUP_PREVIEW
 )
 @Composable
 fun ProfileItemDayPreview() {
     ProfileItem(
         option = Option(
-            action = Option.Action.ClearData,
+            Option.Action.ClearData,
             Icons.Outlined.Settings,
             "Title",
             "Description"
@@ -118,13 +121,14 @@ fun ProfileItemDayPreview() {
 }
 
 @Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    group = NIGHT_GROUP_PREVIEW
 )
 @Composable
 fun ProfileItemNightPreview() {
     ProfileItem(
         option = Option(
-            action = Option.Action.ClearData,
+            Option.Action.ClearData,
             Icons.Outlined.Settings,
             "Title",
             "Description"
