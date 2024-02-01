@@ -17,12 +17,15 @@
     notes?</string>
   
   <string name="item_option_title_clear_data">Clear data</string>
-  <string name="item_option_description_clear_data">Clear all notes</string>
+  <string name="item_option_description_clear_data">Delete all saved notes</string>
   
   <string name="item_option_title_github">Github</string>
-  <string name="item_option_description_github">Access the opensource code</string>
+  <string name="item_option_description_github">Access the code on the Github</string>
   
   <string name="item_option_title_about">About</string>
   <string name="item_option_description_about">App Version: %1$s</string>
+  
+  <string name="clear_data_dialog_title">Caution</string>
+  <string name="clear_data_dialog_text">Are you sure you want to delete all saved notes?</string>
 
 </resources>

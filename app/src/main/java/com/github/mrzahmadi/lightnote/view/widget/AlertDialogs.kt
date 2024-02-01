@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.mrzahmadi.lightnote.R
 import com.github.mrzahmadi.lightnote.ui.theme.cardBackgroundColor
@@ -43,13 +45,19 @@ fun BaseAlertDialog(
         title = {
             Text(
                 text = dialogTitle,
-                color = primaryDarkColor()
+                color = primaryDarkColor(),
+                style = TextStyle(
+                    textAlign = TextAlign.Center
+                )
             )
         },
         text = {
             Text(
                 text = dialogText,
-                color = primaryDarkColor()
+                color = primaryDarkColor(),
+                style = TextStyle(
+                    textAlign = TextAlign.Center
+                )
             )
         },
         onDismissRequest = {

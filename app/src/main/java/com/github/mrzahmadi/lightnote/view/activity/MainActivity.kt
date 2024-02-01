@@ -51,13 +51,14 @@ import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.utils.ext.getRouteWithoutParams
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.screen.ProfileScreen
+import com.github.mrzahmadi.lightnote.view.screen.profile.ProfileScreen
 import com.github.mrzahmadi.lightnote.view.screen.favorite.FavoriteScreen
 import com.github.mrzahmadi.lightnote.view.screen.favorite.FavoriteViewModel
 import com.github.mrzahmadi.lightnote.view.screen.home.HomeScreen
 import com.github.mrzahmadi.lightnote.view.screen.home.HomeViewModel
 import com.github.mrzahmadi.lightnote.view.screen.note.NoteScreen
 import com.github.mrzahmadi.lightnote.view.screen.note.NoteViewModel
+import com.github.mrzahmadi.lightnote.view.screen.profile.ProfileViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,6 +67,7 @@ class MainActivity : ComponentActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private val noteViewModel: NoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -217,7 +219,9 @@ class MainActivity : ComponentActivity() {
                 )
             }
             composable(Screen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(
+                    viewModel = profileViewModel
+                )
             }
             composable(
                 "${Screen.Note.route}?{noteObject}",

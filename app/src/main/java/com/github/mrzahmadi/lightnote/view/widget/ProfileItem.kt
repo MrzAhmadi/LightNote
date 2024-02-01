@@ -45,21 +45,39 @@ fun ProfileItem(
     ) {
         val (iconRef, titleRef, descriptionRef) = createRefs()
 
-        Icon(
-            modifier = modifier
-                .height(32.dp)
-                .width(32.dp)
-                .constrainAs(
-                    iconRef
-                ) {
-                    start.linkTo(parent.start, 16.dp)
-                    top.linkTo(parent.top, 16.dp)
-                    bottom.linkTo(parent.bottom, 16.dp)
-                },
-            imageVector = option.icon,
-            contentDescription = option.title,
-            tint = softGrayColor()
-        )
+        if (option.imageVector != null)
+            Icon(
+                modifier = modifier
+                    .height(32.dp)
+                    .width(32.dp)
+                    .constrainAs(
+                        iconRef
+                    ) {
+                        start.linkTo(parent.start, 16.dp)
+                        top.linkTo(parent.top, 16.dp)
+                        bottom.linkTo(parent.bottom, 16.dp)
+                    },
+                imageVector = option.imageVector,
+                contentDescription = option.title,
+                tint = softGrayColor()
+            )
+
+        if (option.painter != null)
+            Icon(
+                modifier = modifier
+                    .height(32.dp)
+                    .width(32.dp)
+                    .constrainAs(
+                        iconRef
+                    ) {
+                        start.linkTo(parent.start, 16.dp)
+                        top.linkTo(parent.top, 16.dp)
+                        bottom.linkTo(parent.bottom, 16.dp)
+                    },
+                painter = option.painter,
+                contentDescription = option.title,
+                tint = softGrayColor()
+            )
 
         Text(
             modifier = modifier
@@ -114,6 +132,7 @@ fun ProfileItemDayPreview() {
         option = Option(
             Option.Action.ClearData,
             Icons.Outlined.Settings,
+            null,
             "Title",
             "Description"
         )
@@ -130,6 +149,7 @@ fun ProfileItemNightPreview() {
         option = Option(
             Option.Action.ClearData,
             Icons.Outlined.Settings,
+            null,
             "Title",
             "Description"
         )

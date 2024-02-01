@@ -2,6 +2,7 @@ package com.github.mrzahmadi.lightnote.utils.ext
 
 import android.content.Context
 import android.widget.Toast
+import com.github.mrzahmadi.lightnote.utils.WebIntent
 
 fun Context.showToast(
     message: String,
@@ -12,4 +13,11 @@ fun Context.showToast(
         message,
         length
     ).show()
+}
+
+fun Context.openLinkByWebIntent(url: String) {
+    WebIntent.openLink(
+        this,
+        url
+    )
 }

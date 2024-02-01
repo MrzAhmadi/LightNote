@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import com.github.mrzahmadi.lightnote.BuildConfig
 import com.github.mrzahmadi.lightnote.R
 
 data class Option(
@@ -45,8 +46,8 @@ data class Option(
                         Action.Github,
                         imageVector = null,
                         painter = painterResource(id = R.drawable.github_mark),
-                        context.getString(R.string.item_option_title_clear_data),
-                        context.getString(R.string.item_option_description_clear_data)
+                        context.getString(R.string.item_option_title_github),
+                        context.getString(R.string.item_option_description_github)
                     )
                 )
 
@@ -56,7 +57,10 @@ data class Option(
                         imageVector = null,
                         painter = painterResource(id = R.drawable.app_icon),
                         context.getString(R.string.item_option_title_about),
-                        context.getString(R.string.item_option_description_about)
+                        context.getString(
+                            R.string.item_option_description_about,
+                            BuildConfig.VERSION_NAME
+                        )
                     )
                 )
 

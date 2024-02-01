@@ -34,4 +34,7 @@ interface NoteDao {
     @Query("SELECT * FROM Note where isFavorite=true")
     suspend fun getFavoriteList(): List<Note>
 
+    @Query("DELETE FROM Note")
+    suspend fun deleteAll()
+
 }

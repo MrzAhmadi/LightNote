@@ -28,6 +28,10 @@ class NoteRepository @Inject constructor(
         noteDao.delete(ids)
     }
 
+    suspend fun deleteAll() {
+        noteDao.deleteAll()
+    }
+
     suspend fun getFavoriteList(): List<Note> {
         return noteDao.getFavoriteList()
     }
