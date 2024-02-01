@@ -15,4 +15,14 @@
     favorite list by ♡︎ action button</string>
   <string name="delete_note_dialog_text_count">Are you sure you want to delete these %1$d
     notes?</string>
+  
+  <string name="item_option_title_clear_data">Clear data</string>
+  <string name="item_option_description_clear_data">Clear all notes</string>
+  
+  <string name="item_option_title_github">Github</string>
+  <string name="item_option_description_github">Access the opensource code</string>
+  
+  <string name="item_option_title_about">About</string>
+  <string name="item_option_description_about">App Version: %1$s</string>
+
 </resources>
