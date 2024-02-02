@@ -148,7 +148,7 @@ class MainActivity : ComponentActivity() {
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
-            items.forEachIndexed() { index, screen ->
+            items.forEachIndexed { index, screen ->
                 val isSelected =
                     currentDestination?.hierarchy?.any { it.route == screen.route } == true
                 NavigationBarItem(
