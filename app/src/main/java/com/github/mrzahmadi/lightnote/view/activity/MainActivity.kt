@@ -210,6 +210,7 @@ class MainActivity : ComponentActivity() {
             exitTransition = { ExitTransition.None }
         ) {
 
+            // currentRouteChanges
             val currentRoute = navBackStackEntry?.destination?.route
             currentRoute?.let { route ->
                 when (route) {
@@ -225,6 +226,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            // start new routes
             composable(Screen.Home.route) {
                 HomeScreen(
                     navHostController = navController,
