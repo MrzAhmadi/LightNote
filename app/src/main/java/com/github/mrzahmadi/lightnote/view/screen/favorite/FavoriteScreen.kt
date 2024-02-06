@@ -86,7 +86,6 @@ fun FavoriteScreen(
                     // Check if any items are selected, and if so, clear the selection
                     if (selectedFavoriteNoteList.isNotEmpty()) {
                         selectedFavoriteNoteList.forEach {
-                            it.isSelected = false
                             it.isSelectedState.value = false
                         }
                         selectedFavoriteNoteList.clear()
@@ -162,7 +161,6 @@ fun FavoriteScreen(
     DisposableEffect(null) {
         onDispose {
             selectedFavoriteNoteList.forEach {
-                it.isSelected = false
                 it.isSelectedState.value = false
             }
             selectedFavoriteNoteList.clear()
@@ -249,14 +247,14 @@ private fun ShowList(
                     changeSelected = {
                         selectedFavoriteNoteList.clear()
                         noteList.forEach {
-                            if (it.isSelected)
+                            if (it.isSelectedState.value)
                                 selectedFavoriteNoteList.add(it)
                         }
                         changeSelectedStatus()
                     },
                     checkOtherItemsSelected = {
                         val selectedList = noteList.filter {
-                            it.isSelected
+                            it.isSelectedState.value
                         }
                         selectedList.isNotEmpty()
                     },

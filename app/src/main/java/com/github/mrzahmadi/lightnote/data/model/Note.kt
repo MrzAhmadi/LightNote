@@ -24,10 +24,7 @@ data class Note(
     var isNew: Boolean = false
 
     @Ignore
-    var isSelected: Boolean = false
-
-    @Ignore
     @Transient
-    var isSelectedState = mutableStateOf(isSelected)
+    var isSelectedState = mutableStateOf(false)
 
 }

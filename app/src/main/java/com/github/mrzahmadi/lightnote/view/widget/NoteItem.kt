@@ -65,14 +65,14 @@ fun NoteItem(
                     onClick = {
                         if (isSelected.value) {
                             isSelected.value = false
-                            note.isSelected = false
+                            note.isSelectedState.value = false
                             changeSelected?.let { it(note) }
                         } else {
                             val otherItemsSelected =
                                 checkOtherItemsSelected?.invoke() ?: false
                             if (otherItemsSelected) {
                                 isSelected.value = true
-                                note.isSelected = true
+                                note.isSelectedState.value = true
                                 changeSelected?.let { it(note) }
                             } else
                                 navHostController?.navigate(
@@ -82,7 +82,7 @@ fun NoteItem(
                     },
                     onLongClick = {
                         isSelected.value = !isSelected.value
-                        note.isSelected = isSelected.value
+                        note.isSelectedState.value = isSelected.value
                         changeSelected?.let { it(note) }
                     }
                 )

@@ -92,7 +92,6 @@ fun HomeScreen(
                     // Check if any items are selected, and if so, clear the selection
                     if (selectedHomeNoteList.isNotEmpty()) {
                         selectedHomeNoteList.forEach {
-                            it.isSelected = false
                             it.isSelectedState.value = false
                         }
                         selectedHomeNoteList.clear()
@@ -196,7 +195,6 @@ fun HomeScreen(
     DisposableEffect(null) {
         onDispose {
             selectedHomeNoteList.forEach {
-                it.isSelected = false
                 it.isSelectedState.value = false
             }
             selectedHomeNoteList.clear()
@@ -287,14 +285,14 @@ private fun ShowList(
                         selectedHomeNoteList.clear()
                         selectedHomeNoteList = ArrayList(
                             noteList.filter {
-                                it.isSelected
+                                it.isSelectedState.value
                             }
                         )
                         changeSelectedStatus()
                     },
                     checkOtherItemsSelected = {
                         val selectedList = noteList.filter {
-                            it.isSelected
+                            it.isSelectedState.value
                         }
                         selectedList.isNotEmpty()
                     },
