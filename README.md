@@ -4,7 +4,7 @@
 
 ![](readme/intro.gif)
 
-**Light Note** is a simple android implementation that contains several techniques and technology such as:
+**Light Note** is a simple android implementation that contains several techniques and technologies such as:
 
 - **Compose:** User Interface implemented by Jetpack Compose and has tried to have a clean structure and good performance. [read more](https://developer.android.com/develop)
 - **Compose Navigation:** Used compose screens instead of fragments. [read more](https://developer.android.com/jetpack/compose/navigation)
