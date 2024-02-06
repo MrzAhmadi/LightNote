@@ -1,5 +1,7 @@
 package com.github.mrzahmadi.lightnote.view.screen.favorite
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,12 +14,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +46,7 @@ import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
 import com.github.mrzahmadi.lightnote.view.widget.WatermarkMessage
 
-var selectedNoteList = ArrayList<Note>()
+var selectedFavoriteNoteList = ArrayList<Note>()
 
 @Composable
 fun FavoriteScreen(
@@ -53,7 +57,11 @@ fun FavoriteScreen(
 
     val state by viewModel.state.collectAsState()
 
-    var isSelectedToolbarEnabled by remember { mutableStateOf(selectedNoteList.isEmpty().not()) }
+    var isSelectedToolbarEnabled by remember {
+        mutableStateOf(
+            selectedFavoriteNoteList.isEmpty().not()
+        )
+    }
 
     val openDeleteAlertDialog = remember { mutableStateOf(false) }
     if (openDeleteAlertDialog.value) {
@@ -61,9 +69,41 @@ fun FavoriteScreen(
             modifier,
             openDeleteAlertDialog,
         ) {
-            viewModel.processIntent(FavoriteViewIntent.DeleteNote(selectedNoteList))
-            com.github.mrzahmadi.lightnote.view.screen.home.selectedNoteList.clear()
+            viewModel.processIntent(FavoriteViewIntent.DeleteNote(selectedFavoriteNoteList))
+            selectedFavoriteNoteList.clear()
             isSelectedToolbarEnabled = false
+        }
+    }
+
+    // Back press handler
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val backPressedHandler = rememberUpdatedState(onBackPressedDispatcher)
+    var callback: OnBackPressedCallback? = null
+    DisposableEffect(isSelectedToolbarEnabled) {
+        if (isSelectedToolbarEnabled) {
+            callback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Check if any items are selected, and if so, clear the selection
+                    if (selectedFavoriteNoteList.isNotEmpty()) {
+                        selectedFavoriteNoteList.forEach {
+                            it.isSelected = false
+                            it.isSelectedState.value = false
+                        }
+                        selectedFavoriteNoteList.clear()
+                        isSelectedToolbarEnabled = false
+
+                        isEnabled = false
+                        remove()
+                    }
+                }
+            }
+
+            backPressedHandler.value?.addCallback(callback as OnBackPressedCallback)
+        }
+
+        onDispose {
+            callback?.isEnabled = false
+            callback?.remove()
         }
     }
 
@@ -102,7 +142,7 @@ fun FavoriteScreen(
                         navHostController = navHostController,
                         noteList = noteList
                     ) {
-                        isSelectedToolbarEnabled = selectedNoteList.size > 0
+                        isSelectedToolbarEnabled = selectedFavoriteNoteList.size > 0
                     }
                 }
 
@@ -117,6 +157,19 @@ fun FavoriteScreen(
 
     LaunchedEffect(null) {
         viewModel.processIntent(FavoriteViewIntent.GetFavoriteNoteList)
+    }
+
+    DisposableEffect(null) {
+        onDispose {
+            selectedFavoriteNoteList.forEach {
+                it.isSelected = false
+                it.isSelectedState.value = false
+            }
+            selectedFavoriteNoteList.clear()
+            callback?.isEnabled = false
+            callback?.remove()
+            isSelectedToolbarEnabled = false
+        }
     }
 }
 
@@ -154,10 +207,10 @@ private fun ShowDeleteDialog(
     BaseAlertDialog(
         modifier = modifier,
         dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
-        dialogText = if (selectedNoteList.size > 1)
+        dialogText = if (selectedFavoriteNoteList.size > 1)
             stringResource(
                 id = R.string.delete_note_dialog_text_count,
-                selectedNoteList.size
+                selectedFavoriteNoteList.size
             )
         else
             stringResource(id = R.string.delete_note_dialog_text),
@@ -194,10 +247,10 @@ private fun ShowList(
                     note = lazyItem,
                     navHostController = navHostController,
                     changeSelected = {
-                        selectedNoteList.clear()
+                        selectedFavoriteNoteList.clear()
                         noteList.forEach {
                             if (it.isSelected)
-                                selectedNoteList.add(it)
+                                selectedFavoriteNoteList.add(it)
                         }
                         changeSelectedStatus()
                     },
@@ -206,6 +259,9 @@ private fun ShowList(
                             it.isSelected
                         }
                         selectedList.isNotEmpty()
+                    },
+                    isSelected = remember {
+                        lazyItem.isSelectedState
                     }
                 )
             })

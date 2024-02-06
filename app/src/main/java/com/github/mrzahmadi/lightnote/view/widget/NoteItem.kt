@@ -11,10 +11,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,10 +37,9 @@ fun NoteItem(
     note: Note,
     navHostController: NavHostController? = null,
     changeSelected: ((Note) -> Unit)? = null,
-    checkOtherItemsSelected: (() -> Boolean)? = null
+    checkOtherItemsSelected: (() -> Boolean)? = null,
+    isSelected: MutableState<Boolean>
 ) {
-
-    var isSelected by remember { mutableStateOf(note.isSelected) }
 
     Card(
         modifier = modifier
@@ -49,10 +47,11 @@ fun NoteItem(
                 top = 8.dp,
                 bottom = 8.dp
             )
-            .fillMaxWidth(), shape = RoundedCornerShape(
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(
             size = 4.dp,
         ), colors = CardDefaults.cardColors(
-            if (!isSelected)
+            if (!isSelected.value)
                 cardBackgroundColor()
             else
                 lightGrayColor()
@@ -64,15 +63,15 @@ fun NoteItem(
             modifier = modifier
                 .combinedClickable(
                     onClick = {
-                        if (isSelected) {
-                            isSelected = false
+                        if (isSelected.value) {
+                            isSelected.value = false
                             note.isSelected = false
                             changeSelected?.let { it(note) }
                         } else {
                             val otherItemsSelected =
                                 checkOtherItemsSelected?.invoke() ?: false
                             if (otherItemsSelected) {
-                                isSelected = true
+                                isSelected.value = true
                                 note.isSelected = true
                                 changeSelected?.let { it(note) }
                             } else
@@ -82,8 +81,8 @@ fun NoteItem(
                         }
                     },
                     onLongClick = {
-                        isSelected = !isSelected
-                        note.isSelected = isSelected
+                        isSelected.value = !isSelected.value
+                        note.isSelected = isSelected.value
                         changeSelected?.let { it(note) }
                     }
                 )
@@ -128,6 +127,9 @@ fun MyViewPreview() {
             1,
             "Title",
             "Description"
-        )
+        ),
+        isSelected = remember {
+            mutableStateOf(false)
+        }
     )
 }

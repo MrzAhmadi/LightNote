@@ -1,5 +1,7 @@
 package com.github.mrzahmadi.lightnote.view.screen.home
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,12 +17,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +51,7 @@ import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.NoteItem
 import com.github.mrzahmadi.lightnote.view.widget.WatermarkMessage
 
-var selectedNoteList = ArrayList<Note>()
+var selectedHomeNoteList = ArrayList<Note>()
 
 @Composable
 fun HomeScreen(
@@ -58,7 +62,11 @@ fun HomeScreen(
 
     val state by viewModel.state.collectAsState()
 
-    var isSelectedToolbarEnabled by remember { mutableStateOf(selectedNoteList.isEmpty().not()) }
+    var isSelectedToolbarEnabled by remember {
+        mutableStateOf(
+            selectedHomeNoteList.isEmpty().not()
+        )
+    }
 
     val openDeleteAlertDialog = remember { mutableStateOf(false) }
     if (openDeleteAlertDialog.value) {
@@ -66,9 +74,42 @@ fun HomeScreen(
             modifier,
             openDeleteAlertDialog,
         ) {
-            viewModel.processIntent(HomeViewIntent.DeleteNote(selectedNoteList))
-            selectedNoteList.clear()
+            viewModel.processIntent(HomeViewIntent.DeleteNote(selectedHomeNoteList))
+            selectedHomeNoteList.clear()
             isSelectedToolbarEnabled = false
+        }
+    }
+
+
+    // Back press handler
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val backPressedHandler = rememberUpdatedState(onBackPressedDispatcher)
+    var callback: OnBackPressedCallback? = null
+    DisposableEffect(isSelectedToolbarEnabled) {
+        if (isSelectedToolbarEnabled) {
+            callback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Check if any items are selected, and if so, clear the selection
+                    if (selectedHomeNoteList.isNotEmpty()) {
+                        selectedHomeNoteList.forEach {
+                            it.isSelected = false
+                            it.isSelectedState.value = false
+                        }
+                        selectedHomeNoteList.clear()
+                        isSelectedToolbarEnabled = false
+
+                        isEnabled = false
+                        remove()
+                    }
+                }
+            }
+
+            backPressedHandler.value?.addCallback(callback as OnBackPressedCallback)
+        }
+
+        onDispose {
+            callback?.isEnabled = false
+            callback?.remove()
         }
     }
 
@@ -110,7 +151,7 @@ fun HomeScreen(
                             navHostController = navHostController,
                             noteList = noteList
                         ) {
-                            isSelectedToolbarEnabled = selectedNoteList.size > 0
+                            isSelectedToolbarEnabled = selectedHomeNoteList.size > 0
                         }
                     }
 
@@ -147,8 +188,22 @@ fun HomeScreen(
             }
         })
 
+
     LaunchedEffect(null) {
         viewModel.processIntent(HomeViewIntent.GetNoteList)
+    }
+
+    DisposableEffect(null) {
+        onDispose {
+            selectedHomeNoteList.forEach {
+                it.isSelected = false
+                it.isSelectedState.value = false
+            }
+            selectedHomeNoteList.clear()
+            callback?.isEnabled = false
+            callback?.remove()
+            isSelectedToolbarEnabled = false
+        }
     }
 }
 
@@ -186,10 +241,10 @@ private fun ShowDeleteDialog(
     BaseAlertDialog(
         modifier = modifier,
         dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
-        dialogText = if (selectedNoteList.size > 1)
+        dialogText = if (selectedHomeNoteList.size > 1)
             stringResource(
                 R.string.delete_note_dialog_text_count,
-                selectedNoteList.size
+                selectedHomeNoteList.size
             )
         else
             stringResource(R.string.delete_note_dialog_text),
@@ -229,8 +284,8 @@ private fun ShowList(
                     note = lazyItem,
                     navHostController = navHostController,
                     changeSelected = {
-                        selectedNoteList.clear()
-                        selectedNoteList = ArrayList(
+                        selectedHomeNoteList.clear()
+                        selectedHomeNoteList = ArrayList(
                             noteList.filter {
                                 it.isSelected
                             }
@@ -242,6 +297,9 @@ private fun ShowList(
                             it.isSelected
                         }
                         selectedList.isNotEmpty()
+                    },
+                    isSelected = remember {
+                        lazyItem.isSelectedState
                     }
                 )
             }

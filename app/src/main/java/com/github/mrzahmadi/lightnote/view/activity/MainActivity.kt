@@ -51,13 +51,15 @@ import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.windowBackgroundColor
 import com.github.mrzahmadi.lightnote.utils.ext.getRouteWithoutParams
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.screen.profile.ProfileScreen
 import com.github.mrzahmadi.lightnote.view.screen.favorite.FavoriteScreen
 import com.github.mrzahmadi.lightnote.view.screen.favorite.FavoriteViewModel
+import com.github.mrzahmadi.lightnote.view.screen.favorite.selectedFavoriteNoteList
 import com.github.mrzahmadi.lightnote.view.screen.home.HomeScreen
 import com.github.mrzahmadi.lightnote.view.screen.home.HomeViewModel
+import com.github.mrzahmadi.lightnote.view.screen.home.selectedHomeNoteList
 import com.github.mrzahmadi.lightnote.view.screen.note.NoteScreen
 import com.github.mrzahmadi.lightnote.view.screen.note.NoteViewModel
+import com.github.mrzahmadi.lightnote.view.screen.profile.ProfileScreen
 import com.github.mrzahmadi.lightnote.view.screen.profile.ProfileViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -199,6 +201,7 @@ class MainActivity : ComponentActivity() {
         navController: NavHostController,
         innerPadding: PaddingValues
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
         NavHost(
             navController,
             startDestination = Screen.Home.route,
@@ -206,6 +209,22 @@ class MainActivity : ComponentActivity() {
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) {
+
+            val currentRoute = navBackStackEntry?.destination?.route
+            currentRoute?.let { route ->
+                when (route) {
+
+                    Screen.Home.route -> {
+                        selectedHomeNoteList.clear()
+                    }
+
+                    Screen.Favorite.route -> {
+                        selectedFavoriteNoteList.clear()
+                    }
+
+                }
+            }
+
             composable(Screen.Home.route) {
                 HomeScreen(
                     navHostController = navController,

@@ -1,5 +1,6 @@
 package com.github.mrzahmadi.lightnote.data.model
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -24,5 +25,9 @@ data class Note(
 
     @Ignore
     var isSelected: Boolean = false
+
+    @Ignore
+    @Transient
+    var isSelectedState = mutableStateOf(isSelected)
 
 }
