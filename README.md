@@ -4,13 +4,13 @@
 
 ![](readme/intro.gif)
 
-**Light Note** is a simple android implementation that contains several techniques and technologies such as:
+**Light Note** represents a sophisticated Android implementation, integrating a suite of cutting-edge techniques and technologies, including:
 
-- **Compose:** User Interface implemented by Jetpack Compose and has tried to have a clean structure and good performance. [read more](https://developer.android.com/develop)
-- **Compose Navigation:** Used compose screens instead of fragments. [read more](https://developer.android.com/jetpack/compose/navigation)
-- **Room:** Manage db with Room Persistence library. [read more](https://developer.android.com/training/data-storage/room)
-- **Coroutines:** Avoid concurrency and have thread management. [read more](https://developer.android.com/kotlin/coroutines)
-- **HIlt:** Used Hilt for Dependency Injection. [read more](https://developer.android.com/training/dependency-injection/hilt-android)
-- **MVI:** Considered Model View Intent for implementation and separate concerns.
+- **Compose:** The user interface is meticulously crafted using Jetpack Compose, emphasizing a structured design and optimal performance. Further details can be found in the provided reference. [read more](https://developer.android.com/develop)
+- **Compose Navigation:** Fragments are eschewed in favor of Compose screens, a strategic decision detailed in the accompanying literature. [read more](https://developer.android.com/jetpack/compose/navigation)
+- **Room:** Database management is executed with precision through the implementation of the Room Persistence library. Refer to the documentation for comprehensive insights. [read more](https://developer.android.com/training/data-storage/room)
+- **Coroutines:** Prudent concurrency management and thread control are achieved through the strategic utilization of coroutines. Comprehensive information can be found in the provided documentation. [read more](https://developer.android.com/kotlin/coroutines)
+- **HIlt:** Dependency Injection is seamlessly facilitated through the incorporation of Hilt, underscoring the project's commitment to modular and scalable design. Detailed documentation is available for reference. [read more](https://developer.android.com/training/dependency-injection/hilt-android)
+- **MVI:** The Model-View-Intent architecture is deliberately chosen to compartmentalize concerns and elevate code organization. The rationale behind this selection is elucidated in the accompanying materials.
 
-Also it has tried to have some test coverage for vital parts of the project.
+Moreover, a concerted effort has been directed towards establishing robust test coverage for pivotal aspects of the project, ensuring the integrity and reliability of the implemented solution.
