@@ -31,13 +31,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.mrzahmadi.lightnote.R
@@ -61,8 +59,7 @@ fun NoteScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     note: Note,
-    viewModel: NoteViewModel? = null,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    viewModel: NoteViewModel? = null
 ) {
 
     val mNote by remember { derivedStateOf { note } }
