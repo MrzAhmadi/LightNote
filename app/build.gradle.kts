@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //Compose
-    val composeVersion = "1.6.1"
+    val composeVersion = "1.6.2"
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -93,7 +93,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //Hilt
     val hiltVersion = "2.50"
