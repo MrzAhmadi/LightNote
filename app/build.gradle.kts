@@ -61,7 +61,7 @@ dependencies {
     //AndroidX
     val lifecycleVersion = "2.7.0"
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.browser:browser:1.7.0")
+    implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
@@ -78,9 +78,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //Compose
-    val composeVersion = "1.6.2"
+    val composeVersion = "1.6.3"
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui:$composeVersion")
@@ -96,7 +96,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //Hilt
-    val hiltVersion = "2.50"
+    val hiltVersion = "2.51"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
