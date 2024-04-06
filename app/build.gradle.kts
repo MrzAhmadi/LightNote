@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //Compose
-    val composeVersion = "1.6.3"
+    val composeVersion = "1.6.5"
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -96,7 +96,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //Hilt
-    val hiltVersion = "2.51"
+    val hiltVersion = "2.51.1"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
@@ -121,7 +121,7 @@ dependencies {
     testImplementation("androidx.paging:paging-common-ktx:$pagingVersion")
 
     //Retrofit
-    val retrofitVersion = "2.9.0"
+    val retrofitVersion = "2.11.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
