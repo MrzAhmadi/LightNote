@@ -176,15 +176,12 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     icon = {
-                        if (isSelected)
-                            screen.selectedIcon?.let {
-                                Icon(
-                                    imageVector = it,
-                                    contentDescription = screen.route,
-                                )
-                            }
-                        else
-                            screen.unselectedIcon?.let {
+                        (
+                                if (isSelected)
+                                    screen.selectedIcon
+                                else
+                                    screen.unselectedIcon
+                                )?.let {
                                 Icon(
                                     imageVector = it,
                                     contentDescription = screen.route,
