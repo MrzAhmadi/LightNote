@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -76,7 +76,7 @@ fun NoteScreen(
             BaseTopAppBar(
                 modifier = modifier,
                 title = stringResource(Screen.Note.title),
-                navigationIcon = Icons.Filled.ArrowBack,
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 onNavigationIconClick = {
                     viewModel?.processIntent(
                         NoteViewIntent.SaveNote(mNote)

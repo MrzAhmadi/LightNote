@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -73,7 +73,7 @@ fun BaseTopAppBarWithBack(
     BaseTopAppBar(
         modifier = modifier,
         title = title,
-        navigationIcon = Icons.Filled.ArrowBack,
+        navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
         onNavigationIconClick = onClick,
     )
 }
@@ -88,7 +88,7 @@ fun BaseTopAppBarPreview() {
 @Composable
 fun BaseTopAppBarWithNavigationIcon() {
     BaseTopAppBar(
-        navigationIcon = Icons.Filled.ArrowBack,
+        navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
     )
 }
 
@@ -96,7 +96,7 @@ fun BaseTopAppBarWithNavigationIcon() {
 @Composable
 fun BaseTopAppBarWithNavigationAndActionIcon() {
     BaseTopAppBar(
-        navigationIcon = Icons.Filled.ArrowBack,
+        navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
         actions = {
             IconButton(onClick = {}) {
                 Icon(
