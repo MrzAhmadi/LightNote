@@ -86,7 +86,7 @@ fun BaseTopAppBarPreview() {
 
 @Preview
 @Composable
-fun BaseTopAppBarWithNavigationIcon() {
+fun BaseTopAppBarWithNavigationIconPreview() {
     BaseTopAppBar(
         navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
     )
@@ -94,7 +94,7 @@ fun BaseTopAppBarWithNavigationIcon() {
 
 @Preview
 @Composable
-fun BaseTopAppBarWithNavigationAndActionIcon() {
+fun BaseTopAppBarWithNavigationAndActionIconPreview() {
     BaseTopAppBar(
         navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
         actions = {

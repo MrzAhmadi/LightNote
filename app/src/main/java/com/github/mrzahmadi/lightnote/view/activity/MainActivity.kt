@@ -91,17 +91,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = windowBackgroundColor(),
                 ) {
-                    NaveHost()
+                    AppNavHost()
                 }
             }
         }
     }
 
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Preview(showSystemUi = true)
     @Composable
-    fun NaveHost(
+    fun AppNavHostPreview() {
+        AppNavHost()
+    }
+
+    @OptIn(ExperimentalComposeUiApi::class)
+    @Composable
+    fun AppNavHost(
         modifier: Modifier = Modifier,
         navController: NavHostController = rememberNavController(),
     ) {

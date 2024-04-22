@@ -121,7 +121,7 @@ fun NoteItem(
 
 @Preview
 @Composable
-fun MyViewPreview() {
+fun NoteItemPreview() {
     NoteItem(
         note = Note(
             1,
