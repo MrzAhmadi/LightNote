@@ -68,7 +68,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-service:$lifecycleVersion")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.ui:ui-tooling-preview")
     testImplementation("androidx.lifecycle:lifecycle-runtime-testing:$lifecycleVersion")
 
     //Junit and General Testing
