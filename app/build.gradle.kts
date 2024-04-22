@@ -83,11 +83,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.animation:animation:$composeVersion")
+//    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
+//    implementation("androidx.compose.foundation:foundation:$composeVersion")
+//    implementation("androidx.compose.animation:animation:$composeVersion")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     //Coroutines
@@ -104,7 +104,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
+//    implementation("androidx.room:room-paging:$roomVersion")
     testImplementation("androidx.room:room-testing:$roomVersion")
 
     //Navigation Component
@@ -113,18 +113,18 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
 
     //Paging
-    val pagingVersion = "3.2.1"
-    implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
-    implementation("androidx.paging:paging-compose:$pagingVersion")
-    testImplementation("androidx.paging:paging-common-ktx:$pagingVersion")
+//    val pagingVersion = "3.2.1"
+//    implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
+//    implementation("androidx.paging:paging-compose:$pagingVersion")
+//    testImplementation("androidx.paging:paging-common-ktx:$pagingVersion")
 
     //Retrofit
-    val retrofitVersion = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+//    val retrofitVersion = "2.11.0"
+//    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+//    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
     //Glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+//    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     //Gson
     implementation("com.google.code.gson:gson:2.10.1")
