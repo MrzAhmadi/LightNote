@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,10 +58,10 @@ var selectedHomeNoteList = ArrayList<Note>()
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: HomeViewModel,
+    viewModel: HomeViewModel?,
 ) {
 
-    val state by viewModel.state.collectAsState()
+    val state : State<DataState<List<Note>>>? = viewModel?.state?.collectAsState()
 
     var isSelectedToolbarEnabled by remember {
         mutableStateOf(
@@ -74,7 +75,7 @@ fun HomeScreen(
             modifier,
             openDeleteAlertDialog,
         ) {
-            viewModel.processIntent(HomeViewIntent.DeleteNote(selectedHomeNoteList))
+            viewModel?.processIntent(HomeViewIntent.DeleteNote(selectedHomeNoteList))
             selectedHomeNoteList.clear()
             isSelectedToolbarEnabled = false
         }
@@ -125,7 +126,7 @@ fun HomeScreen(
             ) {
                 val (floatingRefs, listRefs) = createRefs()
 
-                when (state) {
+                when (state?.value) {
                     is DataState.Loading -> {
                     }
 
@@ -138,7 +139,7 @@ fun HomeScreen(
                     }
 
                     is DataState.Success -> {
-                        val noteList = (state as DataState.Success<List<Note>>).data
+                        val noteList = (state.value as DataState.Success<List<Note>>).data
                         ShowList(
                             modifier = modifier
                                 .constrainAs(listRefs) {
@@ -155,10 +156,11 @@ fun HomeScreen(
                     }
 
                     is DataState.Error -> {
-                        val error = (state as DataState.Error).error
+                        val error = (state.value as DataState.Error).error
                         error.localizedMessage?.let { LocalContext.current.showToast(it) }
                     }
 
+                    null -> {}
                 }
 
                 FloatingActionButton(
@@ -189,7 +191,7 @@ fun HomeScreen(
 
 
     LaunchedEffect(null) {
-        viewModel.processIntent(HomeViewIntent.GetNoteList)
+        viewModel?.processIntent(HomeViewIntent.GetNoteList)
     }
 
     DisposableEffect(null) {

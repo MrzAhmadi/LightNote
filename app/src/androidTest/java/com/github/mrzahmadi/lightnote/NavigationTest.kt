@@ -10,13 +10,14 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.github.mrzahmadi.lightnote.view.Screen
-import com.github.mrzahmadi.lightnote.view.activity.NAVIGATION_BAR_ITEM_TAG_PREFIX
-import com.github.mrzahmadi.lightnote.view.activity.NaveHost
+import com.github.mrzahmadi.lightnote.view.activity.AppNavHost
+import com.github.mrzahmadi.lightnote.view.activity.MainActivity.Companion.NAVIGATION_BAR_ITEM_TAG_PREFIX
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runners.MethodSorters
+
 
 @FixMethodOrder(MethodSorters.DEFAULT)
 class NavigationTest {
@@ -25,12 +26,13 @@ class NavigationTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var navController: TestNavHostController
 
+
     @Before
     fun setupAppNavHost() {
         composeTestRule.setContent {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            NaveHost(navController = navController)
+            AppNavHost(navController = navController)
         }
     }
 

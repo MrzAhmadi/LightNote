@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,10 +53,10 @@ var selectedFavoriteNoteList = ArrayList<Note>()
 fun FavoriteScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: FavoriteViewModel,
+    viewModel: FavoriteViewModel?,
 ) {
 
-    val state by viewModel.state.collectAsState()
+    val state : State<DataState<List<Note>>>? = viewModel?.state?.collectAsState()
 
     var isSelectedToolbarEnabled by remember {
         mutableStateOf(
@@ -69,7 +70,7 @@ fun FavoriteScreen(
             modifier,
             openDeleteAlertDialog,
         ) {
-            viewModel.processIntent(FavoriteViewIntent.DeleteNote(selectedFavoriteNoteList))
+            viewModel?.processIntent(FavoriteViewIntent.DeleteNote(selectedFavoriteNoteList))
             selectedFavoriteNoteList.clear()
             isSelectedToolbarEnabled = false
         }
@@ -117,7 +118,7 @@ fun FavoriteScreen(
         ) {
             val listRefs = createRef()
 
-            when (state) {
+            when (state?.value) {
                 is DataState.Loading -> {
                 }
 
@@ -130,7 +131,7 @@ fun FavoriteScreen(
                 }
 
                 is DataState.Success -> {
-                    val noteList = (state as DataState.Success<List<Note>>).data
+                    val noteList = (state.value as DataState.Success<List<Note>>).data
                     ShowList(
                         modifier = modifier.constrainAs(listRefs) {
                             top.linkTo(parent.top)
@@ -146,16 +147,17 @@ fun FavoriteScreen(
                 }
 
                 is DataState.Error -> {
-                    val error = (state as DataState.Error).error
+                    val error = (state.value as DataState.Error).error
                     error.localizedMessage?.let { LocalContext.current.showToast(it) }
                 }
 
+                null -> {}
             }
         }
     })
 
     LaunchedEffect(null) {
-        viewModel.processIntent(FavoriteViewIntent.GetFavoriteNoteList)
+        viewModel?.processIntent(FavoriteViewIntent.GetFavoriteNoteList)
     }
 
     DisposableEffect(null) {

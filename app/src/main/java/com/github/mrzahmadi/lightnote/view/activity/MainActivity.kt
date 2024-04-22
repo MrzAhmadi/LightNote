@@ -91,191 +91,207 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = windowBackgroundColor(),
                 ) {
-                    AppNavHost()
-                }
-            }
-        }
-    }
-
-
-    @Preview(showSystemUi = true)
-    @Composable
-    fun AppNavHostPreview() {
-        AppNavHost()
-    }
-
-    @OptIn(ExperimentalComposeUiApi::class)
-    @Composable
-    fun AppNavHost(
-        modifier: Modifier = Modifier,
-        navController: NavHostController = rememberNavController(),
-    ) {
-        val bottomBarState = remember { mutableStateOf(true) }
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        when (navBackStackEntry?.destination?.getRouteWithoutParams()) {
-            Screen.Note.route -> {
-                bottomBarState.value = false
-            }
-
-            else -> {
-                bottomBarState.value = true
-            }
-        }
-        val items = Screen.getNavigationBarScreenList()
-        Scaffold(
-            contentWindowInsets = WindowInsets(0.dp),
-            modifier = modifier.semantics {
-                testTagsAsResourceId = true
-            },
-            bottomBar = {
-                if (bottomBarState.value)
-                    PrimaryNavigationBar(
-                        navController,
-                        items,
-                        modifier
+                    AppNavHost(
+                        homeViewModel = homeViewModel,
+                        favoriteViewModel = favoriteViewModel,
+                        profileViewModel = profileViewModel,
+                        noteViewModel = noteViewModel
                     )
-            }
-        ) { innerPadding ->
-            PrimaryNaveHost(
-                navController,
-                innerPadding,
-            )
-        }
-
-    }
-
-    @Composable
-    private fun PrimaryNavigationBar(
-        navController: NavHostController,
-        items: List<Screen>,
-        modifier: Modifier
-    ) {
-        NavigationBar(
-            containerColor = navigationBarColor(),
-        ) {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination
-            items.forEachIndexed { index, screen ->
-                val isSelected =
-                    currentDestination?.hierarchy?.any { it.route == screen.route } == true
-                NavigationBarItem(
-                    colors = NavigationBarItemDefaults.colors(
-                        disabledIconColor = navigationBarContentColor(),
-                        disabledTextColor = navigationBarContentColor(),
-                        unselectedIconColor = navigationBarContentColor(),
-                        unselectedTextColor = navigationBarContentColor(),
-                        selectedIconColor = navigationBarSelectedContentColor(),
-                        selectedTextColor = navigationBarSelectedContentColor(),
-                        indicatorColor = navigationBarSelectedContentBadgeColor()
-                    ),
-                    modifier = modifier.testTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
-                    label = { Text(stringResource(screen.title)) },
-                    selected = isSelected,
-                    onClick = {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    icon = {
-                        (
-                                if (isSelected)
-                                    screen.selectedIcon
-                                else
-                                    screen.unselectedIcon
-                                )?.let {
-                                Icon(
-                                    imageVector = it,
-                                    contentDescription = screen.route,
-                                )
-                            }
-                    }
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun PrimaryNaveHost(
-        navController: NavHostController,
-        innerPadding: PaddingValues
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        NavHost(
-            navController,
-            startDestination = Screen.Home.route,
-            Modifier.padding(innerPadding),
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
-        ) {
-
-            // currentRouteChanges
-            val currentRoute = navBackStackEntry?.destination?.route
-            currentRoute?.let { route ->
-                when (route) {
-
-                    Screen.Home.route -> {
-                        selectedHomeNoteList.clear()
-                    }
-
-                    Screen.Favorite.route -> {
-                        selectedFavoriteNoteList.clear()
-                    }
-
                 }
             }
-
-            // start new routes
-            composable(Screen.Home.route) {
-                HomeScreen(
-                    navHostController = navController,
-                    viewModel = homeViewModel
-                )
-            }
-            composable(Screen.Favorite.route) {
-                FavoriteScreen(
-                    navHostController = navController,
-                    viewModel = favoriteViewModel
-                )
-            }
-            composable(Screen.Profile.route) {
-                ProfileScreen(
-                    viewModel = profileViewModel
-                )
-            }
-            composable(
-                "${Screen.Note.route}?{noteObject}",
-                arguments = listOf(navArgument("noteObject") {
-                    nullable = true
-                    defaultValue = null
-                    type = NavType.StringType
-                }),
-            ) { navBackStackEntry ->
-                val noteObject = navBackStackEntry.arguments?.getString("noteObject")
-                val note = if (noteObject != null) {
-                    Gson().fromJson(noteObject, Note::class.java)
-                } else {
-                    Note(
-                        title = null,
-                        description = null,
-                    ).apply {
-                        this.isNew = true
-                    }
-                }
-                NoteScreen(
-                    navHostController = navController,
-                    note = note,
-                    viewModel = noteViewModel
-                )
-            }
         }
     }
+
 
     companion object {
         const val NAVIGATION_BAR_ITEM_TAG_PREFIX = "NavigationBarItem_"
     }
 }
 
+@Preview(showSystemUi = true)
+@Composable
+fun AppNavHostPreview() {
+    AppNavHost()
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun AppNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    homeViewModel: HomeViewModel? = null,
+    favoriteViewModel: FavoriteViewModel? = null,
+    profileViewModel: ProfileViewModel? = null,
+    noteViewModel: NoteViewModel? = null
+) {
+    val bottomBarState = remember { mutableStateOf(true) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    when (navBackStackEntry?.destination?.getRouteWithoutParams()) {
+        Screen.Note.route -> {
+            bottomBarState.value = false
+        }
+
+        else -> {
+            bottomBarState.value = true
+        }
+    }
+    val items = Screen.getNavigationBarScreenList()
+    Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
+        modifier = modifier.semantics {
+            testTagsAsResourceId = true
+        },
+        bottomBar = {
+            if (bottomBarState.value)
+                PrimaryNavigationBar(
+                    navController,
+                    items,
+                    modifier
+                )
+        }
+    ) { innerPadding ->
+        PrimaryNaveHost(
+            navController,
+            innerPadding,
+            homeViewModel,
+            favoriteViewModel,
+            profileViewModel,
+            noteViewModel
+        )
+    }
+
+}
+
+@Composable
+private fun PrimaryNavigationBar(
+    navController: NavHostController,
+    items: List<Screen>,
+    modifier: Modifier
+) {
+    NavigationBar(
+        containerColor = navigationBarColor(),
+    ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+        items.forEachIndexed { index, screen ->
+            val isSelected =
+                currentDestination?.hierarchy?.any { it.route == screen.route } == true
+            NavigationBarItem(
+                colors = NavigationBarItemDefaults.colors(
+                    disabledIconColor = navigationBarContentColor(),
+                    disabledTextColor = navigationBarContentColor(),
+                    unselectedIconColor = navigationBarContentColor(),
+                    unselectedTextColor = navigationBarContentColor(),
+                    selectedIconColor = navigationBarSelectedContentColor(),
+                    selectedTextColor = navigationBarSelectedContentColor(),
+                    indicatorColor = navigationBarSelectedContentBadgeColor()
+                ),
+                modifier = modifier.testTag(MainActivity.NAVIGATION_BAR_ITEM_TAG_PREFIX + index),
+                label = { Text(stringResource(screen.title)) },
+                selected = isSelected,
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                icon = {
+                    (
+                            if (isSelected)
+                                screen.selectedIcon
+                            else
+                                screen.unselectedIcon
+                            )?.let {
+                            Icon(
+                                imageVector = it,
+                                contentDescription = screen.route,
+                            )
+                        }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun PrimaryNaveHost(
+    navController: NavHostController,
+    innerPadding: PaddingValues,
+    homeViewModel: HomeViewModel?,
+    favoriteViewModel: FavoriteViewModel?,
+    profileViewModel: ProfileViewModel?,
+    noteViewModel: NoteViewModel?
+) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    NavHost(
+        navController,
+        startDestination = Screen.Home.route,
+        Modifier.padding(innerPadding),
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
+    ) {
+
+        // currentRouteChanges
+        val currentRoute = navBackStackEntry?.destination?.route
+        currentRoute?.let { route ->
+            when (route) {
+
+                Screen.Home.route -> {
+                    selectedHomeNoteList.clear()
+                }
+
+                Screen.Favorite.route -> {
+                    selectedFavoriteNoteList.clear()
+                }
+
+            }
+        }
+
+        // start new routes
+        composable(Screen.Home.route) {
+            HomeScreen(
+                navHostController = navController,
+                viewModel = homeViewModel
+            )
+        }
+        composable(Screen.Favorite.route) {
+            FavoriteScreen(
+                navHostController = navController,
+                viewModel = favoriteViewModel
+            )
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(
+                viewModel = profileViewModel
+            )
+        }
+        composable(
+            "${Screen.Note.route}?{noteObject}",
+            arguments = listOf(navArgument("noteObject") {
+                nullable = true
+                defaultValue = null
+                type = NavType.StringType
+            }),
+        ) { navBackStackEntry ->
+            val noteObject = navBackStackEntry.arguments?.getString("noteObject")
+            val note = if (noteObject != null) {
+                Gson().fromJson(noteObject, Note::class.java)
+            } else {
+                Note(
+                    title = null,
+                    description = null,
+                ).apply {
+                    this.isNew = true
+                }
+            }
+            NoteScreen(
+                navHostController = navController,
+                note = note,
+                viewModel = noteViewModel
+            )
+        }
+    }
+}
