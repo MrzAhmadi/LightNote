@@ -6,6 +6,9 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+val applicationVersionCode = 1
+val applicationVersionName = "0.0015"
+
 android {
     namespace = "com.github.mrzahmadi.lightnote"
     compileSdk = 34
@@ -14,8 +17,8 @@ android {
         applicationId = "com.github.mrzahmadi.lightnote"
         minSdk = 30
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.0015"
+        versionCode = applicationVersionCode
+        versionName = applicationVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -32,6 +35,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            setProperty("archivesBaseName", "LightNote $applicationVersionName - ")
         }
     }
     compileOptions {
@@ -62,7 +66,7 @@ hilt {
 dependencies {
     //AndroidX
     val lifecycleVersion = "2.7.0"
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
@@ -81,11 +85,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //Compose
-    val composeVersion = "1.6.5"
-    implementation("androidx.activity:activity-compose:1.8.2")
+    val composeVersion = "1.6.6"
+    implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.ui:ui:$composeVersion")
 //    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
 //    implementation("androidx.compose.foundation:foundation:$composeVersion")
