@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val applicationVersionCode = 1
@@ -139,6 +140,7 @@ dependencies {
 
     //Firebase
      val firebaseAnalyticsVersion = "21.6.2"
+    implementation("com.google.firebase:firebase-crashlytics:18.6.4")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion")
     implementation("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
