@@ -14,3 +14,6 @@
 - **MVI:** The Model-View-Intent architecture is deliberately chosen to compartmentalize concerns and elevate code organization. The rationale behind this selection is elucidated in the accompanying materials.
 
 Moreover, a concerted effort has been directed towards establishing robust test coverage for pivotal aspects of the project, ensuring the integrity and reliability of the implemented solution.
+
+## How install
+Download laktest version [here](https://github.com/MrzAhmadi/LightNote/raw/master/release/LightNote%200.0015-release.apk)
