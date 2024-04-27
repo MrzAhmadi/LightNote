@@ -36,7 +36,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            setProperty("archivesBaseName", "LightNote $applicationVersionName - ")
+            setProperty("archivesBaseName", "LightNote $applicationVersionName")
         }
     }
     compileOptions {
