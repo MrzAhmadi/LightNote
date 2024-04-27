@@ -116,7 +116,7 @@ fun ProfileScreen(
 
         is DataState.Error -> {
             val state = checkForUpdateState.value as DataState.Error<Configs>
-            state.error.localizedMessage?.let { LocalContext.current.showToast(it) }
+            state.error.localizedMessage?.let { LocalContext.current.showToast(it,Toast.LENGTH_LONG) }
         }
 
         is DataState.Empty -> {

@@ -6,6 +6,7 @@ import com.github.mrzahmadi.lightnote.data.DataState
 import com.github.mrzahmadi.lightnote.data.api.ApiService
 import com.github.mrzahmadi.lightnote.data.model.api.Configs
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +51,9 @@ class ProfileViewModel @Inject constructor(
                 delay(100)
                 _checkForUpdateState.value = DataState.Loading(false)
             } catch (e: Exception) {
+
+                FirebaseCrashlytics.getInstance().recordException(e)
+
                 _checkForUpdateState.value = DataState.Loading(false)
                 delay(100)
                 _checkForUpdateState.value = DataState.Error(e)
