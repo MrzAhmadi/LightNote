@@ -28,6 +28,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
+            isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
+            applicationIdSuffix = ".debug"
+            setProperty("archivesBaseName", "LightNote-$applicationVersionName")
+        }
         release {
             isMinifyEnabled = true
             isDebuggable = false
@@ -36,7 +47,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            setProperty("archivesBaseName", "LightNote $applicationVersionName")
+            setProperty("archivesBaseName", "LightNote-$applicationVersionName")
         }
     }
     compileOptions {
