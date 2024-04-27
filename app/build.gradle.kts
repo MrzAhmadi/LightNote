@@ -128,9 +128,12 @@ dependencies {
 //    testImplementation("androidx.paging:paging-common-ktx:$pagingVersion")
 
     //Retrofit
-//    val retrofitVersion = "2.11.0"
-//    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-//    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    val retrofitVersion = "2.11.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+
+    //Okhttp
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     //Glide
 //    implementation("com.github.bumptech.glide:glide:4.16.0")

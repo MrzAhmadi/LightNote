@@ -22,10 +22,19 @@
   <string name="item_option_title_github">Github</string>
   <string name="item_option_description_github">Access the code on the Github</string>
   
+  <string name="item_option_title_check_for_update">Check for update</string>
+  <string name="item_option_description_check_for_update">Use the latest version of app</string>
+  
   <string name="item_option_title_about">About</string>
   <string name="item_option_description_about">App Version: %1$s</string>
   
   <string name="clear_data_dialog_title">Caution</string>
   <string name="clear_data_dialog_text">Are you sure you want to delete all saved notes?</string>
+  
+  <string name="using_latest_version">You are using the latest version</string>
+  <string name="new_version_is_available_dialog_title">Newer Version is available</string>
+  <string name="new_version_is_available_dialog_text">You can download new version
+    directly from github release</string>
+  <string name="new_version_is_available_dialog_positive">Open browser</string>
 
 </resources>

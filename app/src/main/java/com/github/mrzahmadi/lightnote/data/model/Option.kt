@@ -21,6 +21,7 @@ data class Option(
     enum class Action {
         ClearData,
         Github,
+        CheckForUpdate,
         About
     }
 
@@ -48,6 +49,16 @@ data class Option(
                         painter = painterResource(id = R.drawable.github_mark),
                         context.getString(R.string.item_option_title_github),
                         context.getString(R.string.item_option_description_github)
+                    )
+                )
+
+                add(
+                    Option(
+                        Action.CheckForUpdate,
+                        imageVector = Icons.Outlined.Delete,
+                        painter = null,
+                        context.getString(R.string.item_option_title_check_for_update),
+                        context.getString(R.string.item_option_description_check_for_update)
                     )
                 )
 
