@@ -1,6 +1,5 @@
 package com.github.mrzahmadi.lightnote.data.api.provider
 
-import com.github.mrzahmadi.lightnote.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,9 +14,7 @@ object RetrofitProvider {
         val builder = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(gsonConverterFactory)
-
-        if (BuildConfig.DEBUG)
-            builder.client(okHttpClient)
+            .client(okHttpClient)
 
         return builder.build()
 
