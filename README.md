@@ -16,4 +16,4 @@
 Moreover, a concerted effort has been directed towards establishing robust test coverage for pivotal aspects of the project, ensuring the integrity and reliability of the implemented solution.
 
 ## How install
-Download latest version [here](https://github.com/MrzAhmadi/LightNote/raw/master/release/LightNote%200.0015-release.apk)
+Download latest versions [here](https://github.com/MrzAhmadi/LightNote/releases)
