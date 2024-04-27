@@ -1,4 +1,6 @@
 <img src="readme/logo.svg" width="40">
+<img alt="Dynamic JSON Badge" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FMrzAhmadi%2FLightNote%2Fblob%2Fmaster%2Fconst%2Fconfigs.json%3Fraw%3Dtrue&query=version_name&label=Release">
+
 
 # Light Note
 
