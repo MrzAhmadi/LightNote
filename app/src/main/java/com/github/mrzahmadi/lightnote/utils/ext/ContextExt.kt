@@ -23,8 +23,3 @@ fun Context.openLinkByWebIntent(url: String) {
         url
     )
 }
-
-fun Context.getLifeCycleOwner() : ComponentActivity? = when {
-    this is ContextWrapper -> if (this is ComponentActivity) this else this.baseContext.getLifeCycleOwner()
-    else -> null
-}

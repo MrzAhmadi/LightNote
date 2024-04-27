@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -187,7 +188,7 @@ private fun ShowList(
                 changeSelectedStatus(it)
             }
             if (index != optionList.size - 1)
-                Divider(
+                HorizontalDivider(
                     modifier.background(
                         dividerColor()
                     )
