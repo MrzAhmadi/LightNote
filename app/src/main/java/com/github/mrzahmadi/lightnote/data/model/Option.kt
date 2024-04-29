@@ -3,6 +3,7 @@ package com.github.mrzahmadi.lightnote.data.model
 import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -55,7 +56,7 @@ data class Option(
                 add(
                     Option(
                         Action.CheckForUpdate,
-                        imageVector = Icons.Outlined.Delete,
+                        imageVector = Icons.Outlined.Refresh,
                         painter = null,
                         context.getString(R.string.item_option_title_check_for_update),
                         context.getString(R.string.item_option_description_check_for_update)
