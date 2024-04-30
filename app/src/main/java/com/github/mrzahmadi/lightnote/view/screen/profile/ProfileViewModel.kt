@@ -3,7 +3,6 @@ package com.github.mrzahmadi.lightnote.view.screen.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mrzahmadi.lightnote.data.DataState
-import com.github.mrzahmadi.lightnote.data.api.ApiService
 import com.github.mrzahmadi.lightnote.data.model.api.Configs
 import com.github.mrzahmadi.lightnote.data.repository.ApiRepository
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
