@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.mrzahmadi.lightnote.data.DataState
 import com.github.mrzahmadi.lightnote.data.api.ApiService
 import com.github.mrzahmadi.lightnote.data.model.api.Configs
+import com.github.mrzahmadi.lightnote.data.repository.ApiRepository
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
-    private val apiService: ApiService
+    private val apiRepository: ApiRepository
 ) : ViewModel() {
 
     private val _checkForUpdateState =
@@ -42,7 +43,7 @@ class ProfileViewModel @Inject constructor(
             try {
                 _checkForUpdateState.value = DataState.Loading(true)
 
-                val configs = apiService.getConfigs()
+                val configs = apiRepository.getConfigs()
 
                 if (configs.isThereNewVersion())
                     _checkForUpdateState.value = DataState.Success(configs)

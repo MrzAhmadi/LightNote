@@ -8,6 +8,7 @@ import com.github.mrzahmadi.lightnote.data.api.provider.RetrofitProvider
 import com.github.mrzahmadi.lightnote.data.db.AppDatabase
 import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.db.dao.NoteDao
+import com.github.mrzahmadi.lightnote.data.repository.ApiRepository
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
 import com.github.mrzahmadi.lightnote.utils.BASE_URL
 import dagger.Module
@@ -70,6 +71,11 @@ object AppModule {
     @Provides
     fun provideApiServiceImpl(apiService: ApiService): ApiServiceImpl {
         return ApiServiceImpl(apiService)
+    }
+
+    @Provides
+    fun provideApiRepository(apiService: ApiService): ApiRepository {
+        return ApiRepository(apiService)
     }
 
 }
