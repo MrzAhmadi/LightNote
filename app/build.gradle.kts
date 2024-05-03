@@ -97,7 +97,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //Compose
-    val composeVersion = "1.6.6"
+    val composeVersion = "1.6.7"
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
