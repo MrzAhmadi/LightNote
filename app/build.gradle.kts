@@ -153,8 +153,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     //Firebase
-     val firebaseAnalyticsVersion = "21.6.2"
-    implementation("com.google.firebase:firebase-crashlytics:18.6.4")
+     val firebaseAnalyticsVersion = "22.0.0"
+    implementation("com.google.firebase:firebase-crashlytics:19.0.0")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion")
     implementation("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
