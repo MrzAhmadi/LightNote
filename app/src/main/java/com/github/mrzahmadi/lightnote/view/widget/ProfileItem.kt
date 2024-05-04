@@ -130,7 +130,7 @@ fun ProfileItem(
 fun ProfileItemDayPreview() {
     ProfileItem(
         option = Option(
-            Option.Action.ClearData,
+            Option.Action.CLEAR_DATA,
             Icons.Outlined.Settings,
             null,
             "Title",
@@ -147,7 +147,7 @@ fun ProfileItemDayPreview() {
 fun ProfileItemNightPreview() {
     ProfileItem(
         option = Option(
-            Option.Action.ClearData,
+            Option.Action.CLEAR_DATA,
             Icons.Outlined.Settings,
             null,
             "Title",

@@ -20,10 +20,11 @@ data class Option(
 ) {
 
     enum class Action {
-        ClearData,
-        Github,
-        CheckForUpdate,
-        About
+        SELECT_THEME,
+        CLEAR_DATA,
+        CHECK_FOR_UPDATE,
+        GITHUB,
+        ABOUT
     }
 
     companion object {
@@ -35,7 +36,17 @@ data class Option(
 
                 add(
                     Option(
-                        Action.ClearData,
+                        Action.SELECT_THEME,
+                        imageVector = null,
+                        painter = painterResource(id = R.drawable.baseline_dark_mode),
+                        context.getString(R.string.item_option_title_night_mode),
+                        context.getString(R.string.item_option_description_theme_system)
+                    )
+                )
+
+                add(
+                    Option(
+                        Action.CLEAR_DATA,
                         imageVector = Icons.Outlined.Delete,
                         painter = null,
                         context.getString(R.string.item_option_title_clear_data),
@@ -45,7 +56,18 @@ data class Option(
 
                 add(
                     Option(
-                        Action.Github,
+                        Action.CHECK_FOR_UPDATE,
+                        imageVector = Icons.Outlined.Refresh,
+                        painter = null,
+                        context.getString(R.string.item_option_title_check_for_update),
+                        context.getString(R.string.item_option_description_check_for_update)
+                    )
+                )
+
+
+                add(
+                    Option(
+                        Action.GITHUB,
                         imageVector = null,
                         painter = painterResource(id = R.drawable.github_mark),
                         context.getString(R.string.item_option_title_github),
@@ -55,17 +77,7 @@ data class Option(
 
                 add(
                     Option(
-                        Action.CheckForUpdate,
-                        imageVector = Icons.Outlined.Refresh,
-                        painter = null,
-                        context.getString(R.string.item_option_title_check_for_update),
-                        context.getString(R.string.item_option_description_check_for_update)
-                    )
-                )
-
-                add(
-                    Option(
-                        Action.About,
+                        Action.ABOUT,
                         imageVector = null,
                         painter = painterResource(id = R.drawable.app_icon),
                         context.getString(R.string.item_option_title_about),

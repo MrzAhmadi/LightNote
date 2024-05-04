@@ -144,20 +144,21 @@ private fun onClick(
 
     when (option.action) {
 
-        Option.Action.ClearData -> {
+        Option.Action.SELECT_THEME -> {}
+
+        Option.Action.CLEAR_DATA -> {
             openDeleteAlertDialog.value = true
         }
 
-        Option.Action.Github -> {
+        Option.Action.GITHUB -> {
             context.openLinkByWebIntent(GITHUB_PROJECT_URL)
         }
 
-        Option.Action.CheckForUpdate -> {
+        Option.Action.CHECK_FOR_UPDATE -> {
             viewModel?.processIntent(ProfileViewIntent.FetchConfigs)
         }
 
-        Option.Action.About -> {}
-
+        Option.Action.ABOUT -> {}
     }
 
 }
