@@ -16,10 +16,10 @@
   <string name="delete_note_dialog_text_count">Are you sure you want to delete these %1$d
     notes?</string>
   
-  <string name="item_option_title_night_mode">Night mode</string>
-  <string name="item_option_description_theme_on">On</string>
-  <string name="item_option_description_theme_off">Off</string>
-  <string name="item_option_description_theme_system">Follow System</string>
+  <string name="item_option_title_night_mode">Theme</string>
+  <string name="item_option_description_theme_light">Light</string>
+  <string name="item_option_description_theme_dark">Dark</string>
+  <string name="item_option_description_theme_system">System default</string>
   
   <string name="item_option_title_clear_data">Clear data</string>
   <string name="item_option_description_clear_data">Delete all saved notes</string>
