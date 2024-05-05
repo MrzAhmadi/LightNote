@@ -45,6 +45,7 @@ import com.github.mrzahmadi.lightnote.utils.ext.showToast
 import com.github.mrzahmadi.lightnote.view.Screen
 import com.github.mrzahmadi.lightnote.view.widget.BaseAlertDialog
 import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
+import com.github.mrzahmadi.lightnote.view.widget.OptionListAlertDialog
 import com.github.mrzahmadi.lightnote.view.widget.ProfileItem
 
 @Composable
@@ -52,6 +53,15 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel? = null
 ) {
+
+    val showSelectThemeDialog = remember { mutableStateOf(false) }
+    if (showSelectThemeDialog.value) {
+        ShowSelectThemeDialog(
+            modifier,
+            showSelectThemeDialog,
+            viewModel
+        )
+    }
 
     val checkForUpdateState: State<DataState<Configs>>? =
         viewModel?.checkForUpdateState?.collectAsState()
@@ -100,6 +110,7 @@ fun ProfileScreen(
                 ) {
                     onClick(
                         it,
+                        showSelectThemeDialog,
                         showDeleteAlertDialog,
                         context,
                         viewModel
@@ -116,7 +127,12 @@ fun ProfileScreen(
 
         is DataState.Error -> {
             val state = checkForUpdateState.value as DataState.Error<Configs>
-            state.error.localizedMessage?.let { LocalContext.current.showToast(it,Toast.LENGTH_LONG) }
+            state.error.localizedMessage?.let {
+                LocalContext.current.showToast(
+                    it,
+                    Toast.LENGTH_LONG
+                )
+            }
         }
 
         is DataState.Empty -> {
@@ -137,6 +153,7 @@ fun ProfileScreen(
 
 private fun onClick(
     option: Option,
+    showSelectThemeDialog: MutableState<Boolean>,
     openDeleteAlertDialog: MutableState<Boolean>,
     context: Context,
     viewModel: ProfileViewModel?
@@ -144,7 +161,9 @@ private fun onClick(
 
     when (option.action) {
 
-        Option.Action.SELECT_THEME -> {}
+        Option.Action.SELECT_THEME -> {
+            showSelectThemeDialog.value = true
+        }
 
         Option.Action.CLEAR_DATA -> {
             openDeleteAlertDialog.value = true
@@ -221,12 +240,12 @@ private fun ShowLoadingDialog(
 private fun ShowUpdateDialog(
     modifier: Modifier,
     show: MutableState<Boolean>,
-    context:Context,
+    context: Context,
 ) {
     BaseAlertDialog(
         modifier = modifier,
-        dialogTitle = stringResource(id = R.string.new_version_is_available_dialog_title),
-        dialogText = stringResource(id = R.string.new_version_is_available_dialog_text),
+        title = stringResource(id = R.string.new_version_is_available_dialog_title),
+        text = stringResource(id = R.string.new_version_is_available_dialog_text),
         confirmButtonText = stringResource(id = R.string.new_version_is_available_dialog_positive),
         onDismissRequest = {
             show.value = false
@@ -246,8 +265,8 @@ private fun ShowDeleteDialog(
 ) {
     BaseAlertDialog(
         modifier = modifier,
-        dialogTitle = stringResource(id = R.string.clear_data_dialog_title),
-        dialogText = stringResource(id = R.string.clear_data_dialog_text),
+        title = stringResource(id = R.string.clear_data_dialog_title),
+        text = stringResource(id = R.string.clear_data_dialog_text),
         onDismissRequest = {
             show.value = false
         },
@@ -257,6 +276,31 @@ private fun ShowDeleteDialog(
         }
     )
 }
+
+@Composable
+private fun ShowSelectThemeDialog(
+    modifier: Modifier,
+    show: MutableState<Boolean>,
+    viewModel: ProfileViewModel?
+) {
+    OptionListAlertDialog(
+        modifier = modifier,
+        title = stringResource(id = R.string.item_option_title_night_mode),
+        onDismissRequest = {
+            show.value = false
+        },
+        optionsList = arrayListOf(
+            stringResource(id = R.string.item_option_description_theme_light),
+            stringResource(id = R.string.item_option_description_theme_dark),
+            stringResource(id = R.string.item_option_description_theme_system),
+        ),
+        defaultSelected = 0,
+        onSubmitButtonClick = {
+            show.value = false
+        }
+    )
+}
+
 
 @Preview(
     showSystemUi = true,
