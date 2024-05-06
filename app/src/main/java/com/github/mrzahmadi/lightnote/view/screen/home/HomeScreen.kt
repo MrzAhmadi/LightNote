@@ -240,8 +240,8 @@ private fun ShowDeleteDialog(
 ) {
     BaseAlertDialog(
         modifier = modifier,
-        dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
-        dialogText = if (selectedHomeNoteList.size > 1)
+        title = stringResource(id = R.string.delete_note_dialog_title),
+        text = if (selectedHomeNoteList.size > 1)
             stringResource(
                 R.string.delete_note_dialog_text_count,
                 selectedHomeNoteList.size

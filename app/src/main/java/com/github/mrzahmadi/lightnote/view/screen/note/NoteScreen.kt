@@ -177,8 +177,8 @@ private fun ShowDeleteDialog(
 ) {
     BaseAlertDialog(
         modifier = modifier,
-        dialogTitle = stringResource(id = R.string.delete_note_dialog_title),
-        dialogText = stringResource(id = R.string.delete_note_dialog_text),
+        title = stringResource(id = R.string.delete_note_dialog_title),
+        text = stringResource(id = R.string.delete_note_dialog_text),
         onDismissRequest = {
             openDeleteAlertDialog.value = false
 
