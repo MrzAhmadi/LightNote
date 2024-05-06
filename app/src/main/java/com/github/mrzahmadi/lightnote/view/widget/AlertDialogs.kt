@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -78,9 +79,10 @@ fun BaseAlertDialog(
                 text = title,
                 color = primaryDarkColor(),
                 style = TextStyle(
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Start
                 ),
                 fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
             )
         },
         text = {
@@ -190,12 +192,13 @@ fun OptionListAlertDialog(
                             start = 16.dp,
                             end = 16.dp
                         ),
-                    fontSize = 16.sp,
                     text = title,
                     color = primaryDarkColor(),
                     style = TextStyle(
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Start
                     ),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = modifier.height(8.dp))
