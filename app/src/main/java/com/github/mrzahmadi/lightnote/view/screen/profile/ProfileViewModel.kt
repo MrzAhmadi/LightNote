@@ -6,6 +6,8 @@ import com.github.mrzahmadi.lightnote.data.DataState
 import com.github.mrzahmadi.lightnote.data.model.api.Configs
 import com.github.mrzahmadi.lightnote.data.repository.ApiRepository
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
+import com.github.mrzahmadi.lightnote.data.repository.SharedPreferencesRepository
+import com.github.mrzahmadi.lightnote.ui.theme.DAY_MODE
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -17,17 +19,28 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
-    private val apiRepository: ApiRepository
+    private val apiRepository: ApiRepository,
+    private val sharedPreferencesRepository: SharedPreferencesRepository
 ) : ViewModel() {
+
+    private var themeChangeListener: ThemeChangeListener? = null
 
     private val _checkForUpdateState =
         MutableStateFlow<DataState<Configs>>(DataState.Loading(false))
     val checkForUpdateState: StateFlow<DataState<Configs>> = _checkForUpdateState
 
+    private val _getSelectedThemeState =
+        MutableStateFlow<DataState<Int>>(DataState.Loading(false))
+    val getSelectedThemeState: StateFlow<DataState<Int>> = _getSelectedThemeState
+
     fun processIntent(intent: ProfileViewIntent) {
         when (intent) {
             is ProfileViewIntent.DeleteNoteList -> removeAllNoteList()
-            is ProfileViewIntent.FetchConfigs -> fetchConfigs()
+            is ProfileViewIntent.GetConfigs -> getConfigs()
+            is ProfileViewIntent.GetSelectedTheme -> getSelectedTheme()
+            is ProfileViewIntent.SelectTheme -> {
+                saveTheme(intent.theme)
+            }
         }
     }
 
@@ -37,7 +50,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun fetchConfigs() {
+    private fun getConfigs() {
         viewModelScope.launch {
             try {
                 _checkForUpdateState.value = DataState.Loading(true)
@@ -60,4 +73,29 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getSelectedTheme() {
+        viewModelScope.launch {
+            _getSelectedThemeState.value =
+                DataState.Success(sharedPreferencesRepository[SharedPreferencesRepository.THEME, DAY_MODE])
+            delay(100)
+            _getSelectedThemeState.value = DataState.Empty(true)
+        }
+    }
+
+    private fun saveTheme(theme: Int) {
+        viewModelScope.launch {
+            sharedPreferencesRepository[SharedPreferencesRepository.THEME] = theme
+            themeChangeListener?.onThemeChanged(theme)
+        }
+    }
+
+    fun setThemeChangeListener(listener: ThemeChangeListener) {
+        themeChangeListener = listener
+    }
+
+    interface ThemeChangeListener {
+        fun onThemeChanged(theme: Int)
+    }
+
 }

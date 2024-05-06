@@ -10,6 +10,7 @@ import com.github.mrzahmadi.lightnote.data.db.DatabaseBuilder
 import com.github.mrzahmadi.lightnote.data.db.dao.NoteDao
 import com.github.mrzahmadi.lightnote.data.repository.ApiRepository
 import com.github.mrzahmadi.lightnote.data.repository.NoteRepository
+import com.github.mrzahmadi.lightnote.data.repository.SharedPreferencesRepository
 import com.github.mrzahmadi.lightnote.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -76,6 +77,11 @@ object AppModule {
     @Provides
     fun provideApiRepository(apiService: ApiService): ApiRepository {
         return ApiRepository(apiService)
+    }
+
+    @Provides
+    fun provideSharedPreferencesRepository(@ApplicationContext context: Context): SharedPreferencesRepository {
+        return SharedPreferencesRepository(context)
     }
 
 }

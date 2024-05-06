@@ -48,6 +48,8 @@ import com.github.mrzahmadi.lightnote.view.widget.BaseTopAppBar
 import com.github.mrzahmadi.lightnote.view.widget.OptionListAlertDialog
 import com.github.mrzahmadi.lightnote.view.widget.ProfileItem
 
+var selectedTheme = 0
+
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -65,6 +67,9 @@ fun ProfileScreen(
 
     val checkForUpdateState: State<DataState<Configs>>? =
         viewModel?.checkForUpdateState?.collectAsState()
+
+    val getSelectedThemeState: State<DataState<Int>>? =
+        viewModel?.getSelectedThemeState?.collectAsState()
 
     val showUpdateDialog = remember { mutableStateOf(false) }
     if (showUpdateDialog.value) {
@@ -110,7 +115,6 @@ fun ProfileScreen(
                 ) {
                     onClick(
                         it,
-                        showSelectThemeDialog,
                         showDeleteAlertDialog,
                         context,
                         viewModel
@@ -149,11 +153,20 @@ fun ProfileScreen(
         null -> {}
     }
 
+    when (getSelectedThemeState?.value) {
+
+        is DataState.Success -> {
+            selectedTheme = (getSelectedThemeState.value as DataState.Success<Int>).data
+            showSelectThemeDialog.value = true
+        }
+
+        else -> {}
+    }
+
 }
 
 private fun onClick(
     option: Option,
-    showSelectThemeDialog: MutableState<Boolean>,
     openDeleteAlertDialog: MutableState<Boolean>,
     context: Context,
     viewModel: ProfileViewModel?
@@ -162,7 +175,7 @@ private fun onClick(
     when (option.action) {
 
         Option.Action.SELECT_THEME -> {
-            showSelectThemeDialog.value = true
+            viewModel?.processIntent(ProfileViewIntent.GetSelectedTheme)
         }
 
         Option.Action.CLEAR_DATA -> {
@@ -174,12 +187,11 @@ private fun onClick(
         }
 
         Option.Action.CHECK_FOR_UPDATE -> {
-            viewModel?.processIntent(ProfileViewIntent.FetchConfigs)
+            viewModel?.processIntent(ProfileViewIntent.GetConfigs)
         }
 
         Option.Action.ABOUT -> {}
     }
-
 }
 
 @Composable
@@ -294,8 +306,9 @@ private fun ShowSelectThemeDialog(
             stringResource(id = R.string.item_option_description_theme_dark),
             stringResource(id = R.string.item_option_description_theme_system),
         ),
-        defaultSelected = 0,
+        defaultSelected = selectedTheme,
         onSubmitButtonClick = {
+            viewModel?.processIntent(ProfileViewIntent.SelectTheme(it))
             show.value = false
         }
     )

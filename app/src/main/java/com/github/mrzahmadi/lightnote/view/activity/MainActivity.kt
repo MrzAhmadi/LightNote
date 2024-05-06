@@ -27,6 +27,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -44,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.github.mrzahmadi.lightnote.data.model.Note
 import com.github.mrzahmadi.lightnote.ui.theme.LightNoteTheme
+import com.github.mrzahmadi.lightnote.ui.theme.isSettingsOnNightMode
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarContentColor
 import com.github.mrzahmadi.lightnote.ui.theme.navigationBarSelectedContentBadgeColor
@@ -65,7 +67,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), ProfileViewModel.ThemeChangeListener {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private val favoriteViewModel: FavoriteViewModel by viewModels()
@@ -74,6 +76,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        profileViewModel.setThemeChangeListener(this)
 
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(
@@ -86,7 +90,9 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            LightNoteTheme {
+            LightNoteTheme(
+                darkTheme = isSettingsOnNightMode(LocalContext.current)
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = windowBackgroundColor(),
@@ -102,9 +108,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     companion object {
         const val NAVIGATION_BAR_ITEM_TAG_PREFIX = "NavigationBarItem_"
+    }
+
+    override fun onThemeChanged(theme: Int) {
+        recreate()
     }
 }
 

@@ -76,6 +76,7 @@ hilt {
 }
 
 dependencies {
+    implementation("androidx.appcompat:appcompat:1.6.1")
     //AndroidX
     val lifecycleVersion = "2.7.0"
     implementation("androidx.core:core-ktx:1.13.1")
