@@ -86,6 +86,7 @@ class ProfileViewModel @Inject constructor(
     private fun saveTheme(theme: Int) {
         viewModelScope.launch {
             sharedPreferencesRepository[SharedPreferencesRepository.THEME] = theme
+            delay(20)
             themeChangeListener?.onThemeChanged(theme)
         }
     }
