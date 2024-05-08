@@ -40,6 +40,7 @@ class ProfileViewModel @Inject constructor(
             is ProfileViewIntent.GetSelectedTheme -> getSelectedTheme()
             is ProfileViewIntent.SelectTheme -> {
                 saveTheme(intent.theme)
+                applyTheme(intent.theme)
             }
         }
     }
@@ -86,7 +87,12 @@ class ProfileViewModel @Inject constructor(
     private fun saveTheme(theme: Int) {
         viewModelScope.launch {
             sharedPreferencesRepository[SharedPreferencesRepository.THEME] = theme
-            delay(20)
+        }
+    }
+
+    private fun applyTheme(theme: Int) {
+        viewModelScope.launch {
+            delay(10)
             themeChangeListener?.onThemeChanged(theme)
         }
     }
