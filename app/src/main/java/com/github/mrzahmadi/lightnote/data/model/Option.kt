@@ -30,7 +30,10 @@ data class Option(
     companion object {
 
         @Composable
-        fun getProfileOptionList(context: Context): ArrayList<Option> {
+        fun getProfileOptionList(
+            context: Context,
+            selectedTheme: String
+        ): ArrayList<Option> {
             return arrayListOf<Option>().apply {
                 // Add options
 
@@ -40,7 +43,7 @@ data class Option(
                         imageVector = null,
                         painter = painterResource(id = R.drawable.baseline_dark_mode),
                         context.getString(R.string.item_option_title_night_mode),
-                        context.getString(R.string.item_option_description_theme_system)
+                        selectedTheme
                     )
                 )
 

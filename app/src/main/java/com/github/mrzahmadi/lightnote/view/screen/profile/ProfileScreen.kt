@@ -56,6 +56,23 @@ fun ProfileScreen(
     viewModel: ProfileViewModel? = null
 ) {
 
+    val checkForUpdateState: State<DataState<Configs>>? =
+        viewModel?.checkForUpdateState?.collectAsState()
+
+    val getSelectedThemeState: State<DataState<Int>>? =
+        viewModel?.getSelectedThemeState?.collectAsState()
+
+    when (getSelectedThemeState?.value) {
+
+        is DataState.Success -> {
+            selectedTheme = (getSelectedThemeState.value as DataState.Success<Int>).data
+        }
+
+        else -> {}
+    }
+
+    viewModel?.processIntent(ProfileViewIntent.GetSelectedTheme)
+
     val showSelectThemeDialog = remember { mutableStateOf(false) }
     if (showSelectThemeDialog.value) {
         ShowSelectThemeDialog(
@@ -65,11 +82,6 @@ fun ProfileScreen(
         )
     }
 
-    val checkForUpdateState: State<DataState<Configs>>? =
-        viewModel?.checkForUpdateState?.collectAsState()
-
-    val getSelectedThemeState: State<DataState<Int>>? =
-        viewModel?.getSelectedThemeState?.collectAsState()
 
     val showUpdateDialog = remember { mutableStateOf(false) }
     if (showUpdateDialog.value) {
@@ -111,13 +123,17 @@ fun ProfileScreen(
                 val context = LocalContext.current
                 ShowList(
                     modifier,
-                    Option.getProfileOptionList(context = context)
+                    Option.getProfileOptionList(
+                        context = context,
+                        selectedTheme = getThemeTitle(context)
+                    )
                 ) {
                     onClick(
                         it,
                         showDeleteAlertDialog,
+                        showSelectThemeDialog,
                         context,
-                        viewModel
+                        viewModel,
                     )
                 }
             }
@@ -153,21 +169,21 @@ fun ProfileScreen(
         null -> {}
     }
 
-    when (getSelectedThemeState?.value) {
+}
 
-        is DataState.Success -> {
-            selectedTheme = (getSelectedThemeState.value as DataState.Success<Int>).data
-            showSelectThemeDialog.value = true
-        }
-
-        else -> {}
-    }
-
+@Composable
+private fun getThemeTitle(context: Context) = when (selectedTheme) {
+    0 -> context.getString(R.string.item_option_description_theme_light)
+    1 -> context.getString(
+        R.string.item_option_description_theme_dark
+    )
+    else -> context.getString(R.string.item_option_description_theme_system)
 }
 
 private fun onClick(
     option: Option,
     openDeleteAlertDialog: MutableState<Boolean>,
+    showSelectThemeDialog: MutableState<Boolean>,
     context: Context,
     viewModel: ProfileViewModel?
 ) {
@@ -175,7 +191,7 @@ private fun onClick(
     when (option.action) {
 
         Option.Action.SELECT_THEME -> {
-            viewModel?.processIntent(ProfileViewIntent.GetSelectedTheme)
+            showSelectThemeDialog.value = true
         }
 
         Option.Action.CLEAR_DATA -> {
