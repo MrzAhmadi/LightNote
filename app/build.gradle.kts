@@ -7,8 +7,8 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val applicationVersionCode = 5
-val applicationVersionName = "0.0058"
+val applicationVersionCode = 6
+val applicationVersionName = "0.0060"
 
 android {
     namespace = "com.github.mrzahmadi.lightnote"
