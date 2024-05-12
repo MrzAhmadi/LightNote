@@ -169,3 +169,4 @@ google-services.json
 
 # Android Profiling
 *.hprof
+/app/src/androidTest/java/com/github/mrzahmadi/lightnote/monkey/monkey_log.txt
