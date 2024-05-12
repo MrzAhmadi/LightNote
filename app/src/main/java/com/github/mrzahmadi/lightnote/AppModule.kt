@@ -48,8 +48,8 @@ object AppModule {
     }
 
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClientProvider.createOkHttpClient()
+    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+        return OkHttpClientProvider.createOkHttpClient(context)
     }
 
     @Provides
