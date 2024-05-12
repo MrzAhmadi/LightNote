@@ -25,7 +25,7 @@ class DataBaseReadWriteTest {
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
-                context,
+            context,
             AppDatabase::class.java
         ).build()
         noteDao = db.noteDao()

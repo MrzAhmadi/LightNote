@@ -55,7 +55,7 @@ class NavigationTest {
     fun navHost_verifyTabChange() {
         val favoriteText = composeTestRule.activity.getString(R.string.favorite)
         composeTestRule
-            .onNodeWithTag(NAVIGATION_BAR_ITEM_TAG_PREFIX+1)
+            .onNodeWithTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + 1)
             .performClick()
         composeTestRule
             .onAllNodesWithText(favoriteText)[1]
@@ -64,7 +64,7 @@ class NavigationTest {
 
         val profileText = composeTestRule.activity.getString(R.string.profile)
         composeTestRule
-            .onNodeWithTag(NAVIGATION_BAR_ITEM_TAG_PREFIX+2)
+            .onNodeWithTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + 2)
             .performClick()
         composeTestRule
             .onAllNodesWithText(profileText)[1]
@@ -73,17 +73,16 @@ class NavigationTest {
 
         val homeText = composeTestRule.activity.getString(R.string.home)
         composeTestRule
-            .onNodeWithTag(NAVIGATION_BAR_ITEM_TAG_PREFIX+0)
+            .onNodeWithTag(NAVIGATION_BAR_ITEM_TAG_PREFIX + 0)
             .performClick()
         composeTestRule
             .onAllNodesWithText(homeText)[1]
             .assertIsDisplayed()
     }
 
-    private fun delay(){
+    private fun delay() {
         Thread.sleep(1000)
     }
-
 
 
 }
