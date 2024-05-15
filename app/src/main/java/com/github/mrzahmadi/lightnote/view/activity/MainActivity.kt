@@ -6,8 +6,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -234,14 +238,18 @@ private fun PrimaryNaveHost(
     profileViewModel: ProfileViewModel?,
     noteViewModel: NoteViewModel?
 ) {
+    val animationDuration = 500
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     NavHost(
         navController,
         startDestination = Screen.Home.route,
         Modifier.padding(innerPadding),
-        enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None }
-    ) {
+        enterTransition = { fadeIn(tween(animationDuration)) },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition =  { fadeIn(tween(animationDuration)) },
+        popExitTransition = { ExitTransition.None }
+
+        ) {
 
         // currentRouteChanges
         val currentRoute = navBackStackEntry?.destination?.route

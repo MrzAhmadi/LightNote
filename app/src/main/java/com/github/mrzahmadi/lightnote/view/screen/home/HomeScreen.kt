@@ -2,6 +2,8 @@ package com.github.mrzahmadi.lightnote.view.screen.home
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +31,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,7 +64,7 @@ fun HomeScreen(
     viewModel: HomeViewModel?,
 ) {
 
-    val state : State<DataState<List<Note>>>? = viewModel?.state?.collectAsState()
+    val state: State<DataState<List<Note>>>? = viewModel?.state?.collectAsState()
 
     var isSelectedToolbarEnabled by remember {
         mutableStateOf(
@@ -163,8 +166,26 @@ fun HomeScreen(
                     null -> {}
                 }
 
+                var isScaled by remember {
+                    mutableStateOf(false)
+                }
+                val scale by animateFloatAsState(
+                    targetValue = if (isScaled) 1.2f else 1f,
+                    label = "rotationAngle",
+                    animationSpec = tween(200),
+                    finishedListener = {
+                        if (isScaled)
+                            isScaled = false
+                        else if (isScaled.not())
+                            navHostController.navigate(Screen.Note.route)
+                    }
+                )
                 FloatingActionButton(
                     modifier = modifier
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                        }
                         .constrainAs(floatingRefs) {
                             bottom.linkTo(parent.bottom, 16.dp)
                             end.linkTo(parent.end, 16.dp)
@@ -178,7 +199,7 @@ fun HomeScreen(
                     contentColor = whiteColor(),
                     containerColor = primaryBlueColor(),
                     onClick = {
-                        navHostController.navigate(Screen.Note.route)
+                        isScaled = !isScaled
                     }
                 ) {
                     Icon(

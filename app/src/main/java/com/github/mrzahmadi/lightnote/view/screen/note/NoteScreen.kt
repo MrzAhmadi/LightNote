@@ -2,6 +2,8 @@ package com.github.mrzahmadi.lightnote.view.screen.note
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -84,7 +87,13 @@ fun NoteScreen(
                     navHostController.popBackStack()
                 },
                 actions = {
-                    ToolbarActions(note, openDeleteAlertDialog, isFavorite, mNote)
+                    ToolbarActions(
+                        modifier,
+                        note,
+                        openDeleteAlertDialog,
+                        isFavorite,
+                        mNote
+                    )
                 }
             )
         }, content = { paddingValues ->
@@ -125,6 +134,7 @@ fun NoteScreen(
 
 @Composable
 private fun ToolbarActions(
+    modifier: Modifier,
     note: Note,
     openDeleteAlertDialog: MutableState<Boolean>,
     isFavorite: MutableState<Boolean>,
@@ -141,11 +151,27 @@ private fun ToolbarActions(
             )
         }
     }
+
+    var isRotated by remember {
+        mutableStateOf(false)
+    }
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (isRotated) 180f else 0f,
+        label = "rotationAngle",
+        animationSpec = tween(1000),
+    )
+
     if (isFavorite.value) {
-        IconButton(onClick = {
-            mNote.isFavorite = false
-            isFavorite.value = false
-        }) {
+        IconButton(
+            modifier = modifier
+                .graphicsLayer {
+                    rotationY = rotationAngle
+                },
+            onClick = {
+                isRotated = !isRotated
+                mNote.isFavorite = false
+                isFavorite.value = false
+            }) {
             Icon(
                 imageVector = Icons.Filled.Favorite,
                 contentDescription = null,
@@ -154,10 +180,16 @@ private fun ToolbarActions(
         }
     }
     if (!isFavorite.value) {
-        IconButton(onClick = {
-            mNote.isFavorite = true
-            isFavorite.value = true
-        }) {
+        IconButton(
+            modifier = modifier
+                .graphicsLayer {
+                    rotationY = rotationAngle
+                },
+            onClick = {
+                isRotated = !isRotated
+                mNote.isFavorite = true
+                isFavorite.value = true
+            }) {
             Icon(
                 imageVector = Icons.Filled.FavoriteBorder,
                 contentDescription = null,
