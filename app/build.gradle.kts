@@ -115,7 +115,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
     //Hilt
-    val hiltVersion = "2.51.1"
+    val hiltVersion = "2.52"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
