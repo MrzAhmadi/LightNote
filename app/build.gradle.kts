@@ -12,12 +12,12 @@ val applicationVersionName = "0.0065"
 
 android {
     namespace = "com.github.mrzahmadi.lightnote"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.github.mrzahmadi.lightnote"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionCode = applicationVersionCode
         versionName = applicationVersionName
 
