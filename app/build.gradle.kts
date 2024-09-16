@@ -78,7 +78,7 @@ hilt {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     //AndroidX
-    val lifecycleVersion = "2.8.4"
+    val lifecycleVersion = "2.8.5"
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
@@ -98,11 +98,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     //Compose
-    val composeVersion = "1.6.8"
-    implementation("androidx.activity:activity-compose:1.9.1")
-    implementation("androidx.compose.material3:material3:1.2.1")
+    val composeVersion = "1.7.1"
+    implementation("androidx.activity:activity-compose:1.9.2")
+    implementation("androidx.compose.material3:material3:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.activity:activity-compose:1.9.1")
+    implementation("androidx.activity:activity-compose:1.9.2")
     implementation("androidx.compose.ui:ui:$composeVersion")
 //    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
 //    implementation("androidx.compose.foundation:foundation:$composeVersion")
@@ -112,7 +112,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
     //Hilt
     val hiltVersion = "2.52"
@@ -129,7 +129,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:$roomVersion")
 
     //Navigation Component
-    val navigationVersion = "2.7.7"
+    val navigationVersion = "2.8.0"
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
 
@@ -155,7 +155,7 @@ dependencies {
 
     //Firebase
      val firebaseAnalyticsVersion = "22.1.0"
-    implementation("com.google.firebase:firebase-crashlytics:19.0.3")
+    implementation("com.google.firebase:firebase-crashlytics:19.1.0")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion")
     implementation("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
