@@ -78,8 +78,8 @@ hilt {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     //AndroidX
-    val lifecycleVersion = "2.8.6"
-    implementation("androidx.core:core-ktx:1.13.1")
+    val lifecycleVersion = "2.8.7"
+    implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
@@ -98,11 +98,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     //Compose
-    val composeVersion = "1.7.2"
-    implementation("androidx.activity:activity-compose:1.9.2")
-    implementation("androidx.compose.material3:material3:1.3.0")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.activity:activity-compose:1.9.2")
+    val composeVersion = "1.7.5"
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
+    implementation("androidx.activity:activity-compose:1.9.3")
     implementation("androidx.compose.ui:ui:$composeVersion")
 //    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
 //    implementation("androidx.compose.foundation:foundation:$composeVersion")
@@ -129,7 +129,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:$roomVersion")
 
     //Navigation Component
-    val navigationVersion = "2.8.1"
+    val navigationVersion = "2.8.4"
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
 
@@ -154,8 +154,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
 
     //Firebase
-     val firebaseAnalyticsVersion = "22.1.0"
-    implementation("com.google.firebase:firebase-crashlytics:19.1.0")
+     val firebaseAnalyticsVersion = "22.1.2"
+    implementation("com.google.firebase:firebase-crashlytics:19.2.1")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion")
     implementation("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
