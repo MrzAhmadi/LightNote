@@ -8,8 +8,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-val applicationVersionCode = 8
-val applicationVersionName = "0.0065"
+val applicationVersionCode = 9
+val applicationVersionName = "0.007"
 
 android {
     namespace = "com.github.mrzahmadi.lightnote"
