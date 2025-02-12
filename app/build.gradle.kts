@@ -98,11 +98,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     //Compose
-    val composeVersion = "1.7.5"
-    implementation("androidx.activity:activity-compose:1.9.3")
+    val composeVersion = "1.7.7"
+    implementation("androidx.activity:activity-compose:1.10.0")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
-    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.activity:activity-compose:1.10.0")
     implementation("androidx.compose.ui:ui:$composeVersion")
 //    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
 //    implementation("androidx.compose.foundation:foundation:$composeVersion")
@@ -115,7 +115,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
     //Hilt
-    val hiltVersion = "2.52"
+    val hiltVersion = "2.55"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
@@ -129,7 +129,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:$roomVersion")
 
     //Navigation Component
-    val navigationVersion = "2.8.4"
+    val navigationVersion = "2.8.6"
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
 
@@ -151,11 +151,11 @@ dependencies {
 //    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     //Gson
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.google.code.gson:gson:2.12.1")
 
     //Firebase
      val firebaseAnalyticsVersion = "22.1.2"
-    implementation("com.google.firebase:firebase-crashlytics:19.2.1")
+    implementation("com.google.firebase:firebase-crashlytics:19.4.0")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion")
     implementation("com.google.firebase:firebase-analytics-ktx:$firebaseAnalyticsVersion")
