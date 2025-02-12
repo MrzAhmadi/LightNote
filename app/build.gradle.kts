@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 val applicationVersionCode = 8
@@ -62,7 +63,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
@@ -112,7 +113,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
 
     //Hilt
     val hiltVersion = "2.55"
@@ -154,7 +155,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.12.1")
 
     //Firebase
-     val firebaseAnalyticsVersion = "22.1.2"
+     val firebaseAnalyticsVersion = "22.2.0"
     implementation("com.google.firebase:firebase-crashlytics:19.4.0")
     implementation("com.google.firebase:firebase-core:21.1.1")
     implementation("com.google.firebase:firebase-analytics:$firebaseAnalyticsVersion")
