@@ -99,7 +99,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     //Compose
-    val composeVersion = "1.7.7"
+    val composeVersion = "1.7.8"
     implementation("androidx.activity:activity-compose:1.10.0")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
@@ -130,7 +130,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:$roomVersion")
 
     //Navigation Component
-    val navigationVersion = "2.8.6"
+    val navigationVersion = "2.8.7"
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
 
